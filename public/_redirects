@@ -1,0 +1,37 @@
+# Hugo Plumbing — Netlify 301 redirects for Wix → Astro SEO parity
+# Built from .superpowers/sdd/wix-url-inventory.md (do not edit by hand without updating that source).
+
+# --- Host canonicalization: www → apex (new canonical host is the apex per business.ts) ---
+https://www.hugoplumbingtx.com/*    https://hugoplumbingtx.com/:splat    301!
+
+# --- Main pages that changed path ---
+/home              /                301
+/our-blog          /blog            301
+/request-service   /contact         301
+/recent-projects   /projects        301
+/items             /                301
+/freetickets       /charities       301
+
+# --- Per-ZIP "Areas We Serve" landing pages → matching neighborhood page (or hub) ---
+/plumber-houston-77008    /areas/the-heights      301
+/plumber-houston-77018    /areas-we-serve         301
+/plumber-houston-77022    /areas-we-serve         301
+/plumber-houston-77024    /areas-we-serve         301
+/plumber-houston-77055    /areas/spring-branch    301
+/plumber-houston-77057    /areas-we-serve         301
+/plumber-houston-77080    /areas/spring-branch    301
+/plumber-houston-77088    /areas-we-serve         301
+/plumber-houston-77092    /areas-we-serve         301
+/plumber-77056            /areas-we-serve         301
+
+# --- Blog posts: /post/<slug> → /blog/<slug> ---
+/post/plumbing-drains-in-houston    /blog/plumbing-drains-in-houston    301
+/post/common-causes-of-clogged-drains-in-houston-homes    /blog/common-causes-of-clogged-drains-in-houston-homes    301
+/post/mastering-the-flow-understanding-different-types-of-plumbing-valves    /blog/mastering-the-flow-understanding-different-types-of-plumbing-valves    301
+/post/hot-water-heater-showdown-standard-vs-tankless    /blog/hot-water-heater-showdown-standard-vs-tankless    301
+/post/flushing-out-the-truth-how-plumbing-can-make-or-break-your-home-s-value    /blog/flushing-out-the-truth-how-plumbing-can-make-or-break-your-homes-value    301
+/post/the-importance-of-regular-plumbing-maintenance-in-houston-tx    /blog/the-importance-of-regular-plumbing-maintenance-in-houston-tx    301
+# Duplicate maintenance post consolidated into the Houston-TX version (avoids cannibalization).
+/post/the-importance-of-regular-plumbing-maintenance    /blog/the-importance-of-regular-plumbing-maintenance-in-houston-tx    301
+/blog/the-importance-of-regular-plumbing-maintenance    /blog/the-importance-of-regular-plumbing-maintenance-in-houston-tx    301
+/post/kitchen-sink-clogged-here-s-what-to-do-and-when-to-call-a-houston-plumber    /blog/kitchen-sink-clogged-what-to-do-and-when-to-call-a-houston-plumber    301

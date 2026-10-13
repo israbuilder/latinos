@@ -1,0 +1,141 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ScheduleButton from "../../components/ScheduleButton.astro";
+import { business } from "../../data/business";
+
+export async function getStaticPaths() {
+  const services = await getCollection("services");
+  return services.map((svc) => ({ params: { slug: svc.id }, props: { svc } }));
+}
+
+const { svc } = Astro.props;
+const { Content } = await render(svc);
+
+const others = (await getCollection("services"))
+  .filter((s) => s.id !== svc.id)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: svc.data.h1,
+  description: svc.data.description,
+  serviceType: svc.data.h1,
+  areaServed: business.areaServed,
+  provider: {
+    "@type": "Plumber",
+    "@id": `${business.url}/#business`,
+    name: business.name,
+    telephone: business.phone,
+    url: business.url,
+  },
+  url: `${business.url}/services/${svc.id}`,
+};
+
+const faqSchema = svc.data.faq?.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: svc.data.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    }
+  : null;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: business.url },
+    { "@type": "ListItem", position: 2, name: "Servicios", item: `${business.url}/services` },
+    { "@type": "ListItem", position: 3, name: svc.data.h1, item: `${business.url}/services/${svc.id}` },
+  ],
+};
+---
+<BaseLayout
+  title={`${svc.data.title} | ${business.name}`}
+  description={svc.data.description}
+  path={`/services/${svc.id}`}
+  jsonLd={[serviceSchema, breadcrumbSchema, faqSchema].filter(Boolean)}
+>
+  <!-- Header -->
+  <section class="bg-navy text-white border-b-4 border-brass">
+    <div class="max-w-4xl mx-auto px-6 py-14">
+      <nav aria-label="Breadcrumb" class="mb-4">
+        <a href="/services" class="font-display font-bold text-brass-light text-sm hover:text-white transition-colors flex items-center gap-1.5">
+          <span>←</span>
+          <span>Todos los servicios</span>
+        </a>
+      </nav>
+      <h1 class="hp-rise font-display font-black text-3xl sm:text-5xl leading-tight">{svc.data.h1}</h1>
+      <p class="mt-4 text-white/85 text-lg max-w-2xl">{svc.data.summary}</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <ScheduleButton class="px-7 py-3.5 text-base" label="Agendar Cita en Línea" />
+        <a href={business.phoneHref} class="hp-lift inline-flex items-center justify-center gap-2 border-2 border-brass text-brass-light hover:bg-brass hover:text-navy px-7 py-3.5 rounded-xl font-display font-bold text-base transition-colors">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          Llamar {business.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-4xl px-6 py-14">
+    <div class="prose max-w-none"><Content /></div>
+
+    {svc.data.faq && svc.data.faq.length > 0 && (
+      <div class="mt-16 pt-10 border-t border-navy/10">
+        <h2 class="font-display font-black text-2xl sm:text-3xl text-navy mb-6">Preguntas Frecuentes</h2>
+        <div class="space-y-4">
+          {svc.data.faq.map((f) => (
+            <div class="bg-white border border-navy/10 rounded-2xl p-6 shadow-sm">
+              <h3 class="font-display font-bold text-lg text-navy">{f.q}</h3>
+              <p class="mt-2.5 text-navy/70 leading-relaxed">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- CTA Box -->
+    <div class="mt-16 bg-cream border border-navy/10 rounded-3xl p-8 sm:p-12 text-center shadow-sm">
+      <span class="font-display text-xs font-bold uppercase tracking-[0.2em] text-brass">Servicio 24/7</span>
+      <h2 class="mt-2 font-display font-black text-2xl sm:text-3xl text-navy">¿Necesitas {svc.data.h1.toLowerCase()} en Houston?</h2>
+      <p class="mt-3 text-navy/70 max-w-xl mx-auto leading-relaxed">
+        Agenda online en minutos o llámanos directamente al {business.phone}. Atendemos {business.areaServed} y alrededores con rapidez y garantía.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href={business.phoneHref}
+          class="hp-lift inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-navy px-7 py-3.5 font-display text-base font-bold text-white shadow-md hover:bg-navy-700 transition-colors"
+        >
+          Llamar al {business.phone}
+        </a>
+        <ScheduleButton class="w-full sm:w-auto px-7 py-3.5" label="Agendar Cita en Línea" />
+      </div>
+    </div>
+
+    <!-- Related services -->
+    <div class="mt-16 pt-10 border-t border-navy/10">
+      <h2 class="font-display font-black text-xl text-navy mb-5">Otros Servicios Relacionados</h2>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {others.map((o) => (
+          <a href={`/services/${o.id}`} class="hp-lift block bg-white border border-navy/10 rounded-2xl p-5 shadow-sm hover:border-brass/40 hover:shadow-md transition-all">
+            <span class="font-display font-bold text-navy text-lg">{o.data.h1}</span>
+            <span class="block text-sm text-navy/70 mt-1.5 line-clamp-2 leading-relaxed">{o.data.summary}</span>
+            <span class="inline-flex items-center gap-1 font-display font-bold text-water text-xs mt-3">Ver servicio →</span>
+          </a>
+        ))}
+      </div>
+      <p class="mt-8 text-navy/70 text-sm">
+        ¿Quieres confirmar si cubrimos tu zona? Revisa nuestras <a href="/areas-we-serve" class="font-bold text-water hover:text-navy transition-colors">áreas de servicio</a>
+        o consulta artículos útiles en el <a href="/blog" class="font-bold text-water hover:text-navy transition-colors">blog de {business.name}</a>.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

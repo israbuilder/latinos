@@ -1,0 +1,58 @@
+export const business = {
+  name: "Latinos Plumbing & Home Services",
+  legalName: "Houston IT Security / Latinos Plumbing & Home Services LLC",
+  founder: "Israel Zepeda",
+  email: "houstonitbrenda@gmail.com",
+  phone: "(346) 477-8912",
+  phoneHref: "tel:+13464778912",
+  url: "https://latinos.houstonitsecurity.net",
+  address: "1927 W. McKinney St., Houston, TX 77019",
+  // Structured address for schema.org PostalAddress
+  addressParts: {
+    street: "1927 W. McKinney St.",
+    city: "Houston",
+    state: "TX",
+    zip: "77019",
+  },
+  areaServed: "Houston, TX",
+  areaServedList: [
+    "Houston, TX",
+    "Katy, TX",
+    "Cypress, TX",
+    "Bellaire, TX",
+    "Spring Branch, Houston, TX",
+    "The Heights, Houston, TX",
+    "Sugar Land, TX",
+    "Humble, TX",
+    "Kingwood, TX",
+    "Spring, TX",
+    "The Woodlands, TX",
+    "Pearland, TX",
+    "Pasadena, TX",
+    "Missouri City, TX",
+  ],
+  // Coordinates for 1927 W. McKinney St., Houston, TX 77019
+  geo: { lat: 29.7587896, lng: -95.3895541 },
+  // schema.org priceRange hint
+  priceRange: "$$",
+  license: "Texas Licensed & Insured Contractor",
+  logo: "/images/logo-latinos.svg",
+  yearFounded: 2018,
+  yearsTrusted: "6+",
+  trustedPhrase: "Calidad, Confianza y Servicio de Emergencia 24/7 en Houston",
+  hours: "Mo-Su 00:00-23:59",
+  hoursDisplay: "Servicio de Emergencia 24/7 para el Hogar y Comercio",
+  socials: {
+    facebook: "https://houstonitsecurity.net",
+    instagram: "https://houstonitsecurity.net",
+    google: "https://www.google.com/maps?q=1927+W+McKinney+St,+Houston,+TX+77019",
+    tiktok: "https://houstonitsecurity.net",
+    youtube: "https://houstonitsecurity.net"
+  },
+  rating: { value: "5.0", count: "124" },
+  booking: {
+    pageUrl: "/contact",
+    widgetToken: "",
+    orgName: "Latinos-Plumbing",
+  },
+} as const;

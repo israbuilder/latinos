@@ -1,0 +1,465 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScheduleButton from "../components/ScheduleButton.astro";
+import { business } from "../data/business";
+import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
+import Reviews from "../components/Reviews.astro";
+import { getPosts, formatPostDate } from "../lib/blog-api";
+import heroVan from "../assets/carro-luisito.png";
+import heroVanMobile from "../assets/carro-luisito.png";
+
+// Optimized responsive hero images
+const heroMobile = await getImage({
+  src: heroVanMobile,
+  format: "webp",
+  width: 768,
+  quality: 65,
+});
+
+const heroDesktop = await getImage({
+  src: heroVan,
+  format: "webp",
+  widths: [1440, 1080],
+  quality: 70,
+});
+
+const services = [
+  {
+    title: "Reparación de Plomería",
+    desc: "Fugas ocultas, drenajes tapados, calentadores de agua, líneas de gas y alcantarillado. Solución rápida y definitiva.",
+    accent: "water",
+    icon: "wrench",
+  },
+  {
+    title: "Extracción y Limpieza de Agua",
+    desc: "Respuesta inmediata ante inundaciones y roturas de tuberías para proteger la estructura de tu hogar o negocio.",
+    accent: "brass",
+    icon: "droplet",
+  },
+  {
+    title: "Instalación & Nueva Construcción",
+    desc: "Instalaciones completas para remodelaciones y nuevas obras residenciales o comerciales en todo el área de Houston.",
+    accent: "flame",
+    icon: "blueprint",
+  },
+];
+
+const painPoints = [
+  "¿Buscas una empresa con precios honestos y sin cobros ocultos?",
+  "¿Tienes una fuga que otros técnicos no han podido resolver?",
+  "¿La última compañía de plomería te dejó una mala experiencia?",
+  "¿Necesitas plomeros que te expliquen todo claramente en tu idioma?",
+  "¿Tienes una emergencia de noche o en fin de semana?",
+  "¿Tu calentador de agua dejó de calentar o hace ruidos extraños?",
+];
+
+const stats = [
+  {
+    title: `${business.rating.count}+`,
+    label: `${business.rating.value}★ Reseñas en Google`,
+  },
+  {
+    title: business.yearsTrusted,
+    label: "Años en el Gran Houston",
+  },
+  {
+    title: "100%",
+    label: "Licenciados y Asegurados",
+  },
+  {
+    title: "24/7",
+    label: "Emergencias Día y Noche",
+  },
+];
+
+const projects = [
+  { src: "/images/placeholder.jpeg", alt: `${business.name} proyecto completado` },
+  { src: "/images/placeholder.jpeg", alt: `${business.name} instalación de tuberías` },
+  { src: "/images/placeholder.jpeg", alt: `${business.name} reparación de calentador` },
+  { src: "/images/placeholder.jpeg", alt: `${business.name} inspección de drenaje` },
+];
+
+const serviceLinks = (await getCollection("services")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+// Consulta dinámica a la API de Blog para mostrar los 3 artículos más recientes si existen
+const latestPostsRes = await getPosts({ per_page: 3, page: 1 });
+const latestPosts = latestPostsRes.data || [];
+---
+
+<BaseLayout
+  title={`Plomeros en Houston, TX | ${business.name} — Servicio de Emergencia 24/7`}
+  description={`¿Necesitas un plomero de confianza en Houston, TX? ${business.name} ofrece atención de emergencias 24/7, desatasco de drenajes, reparación de fugas, calentadores de agua y más. Llama al ${business.phone}.`}
+  path="/"
+  includeReviews={true}
+>
+  <!-- HERO SECTION -->
+  <section class="relative isolate overflow-hidden bg-white text-navy">
+    <!-- Mobile hero image banner -->
+    <div class="relative h-[280px] overflow-hidden sm:h-[360px] lg:hidden">
+      <picture>
+        <source media="(max-width: 768px)" srcset={heroMobile.src} />
+        <img
+          src={heroMobile.src}
+          alt={`Unidad de servicio de ${business.name} en Houston, TX`}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          width="900"
+          height="700"
+          class="absolute inset-0 h-full w-full object-cover object-left"
+        />
+      </picture>
+      <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+    </div>
+
+    <!-- Desktop background truck -->
+    <div class="absolute inset-0 -z-30 hidden lg:block overflow-hidden">
+      <picture>
+        <img
+          src={heroDesktop.src}
+          srcset={heroDesktop.srcSet.attribute}
+          sizes="100vw"
+          alt={`Unidad de servicio de ${business.name} en Houston, TX`}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          width="1920"
+          height="1440"
+          class="h-full w-full object-cover object-right translate-x-[12%] xl:translate-x-[15%]"
+        />
+      </picture>
+    </div>
+
+    <!-- Floating desktop call button -->
+    <a
+      href={business.phoneHref}
+      class="hp-lift absolute right-[18%] top-[82%] z-20 hidden items-center justify-center gap-3 rounded-2xl border-2 border-white bg-brass px-8 py-4 font-display text-lg font-black text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-brass-dark lg:inline-flex"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+      Llamar al {business.phone}
+    </a>
+
+    <!-- Gradients for text contrast -->
+    <div class="absolute inset-y-0 left-0 -z-20 hidden w-[68%] bg-gradient-to-r from-white from-0% via-white/95 via-55% to-transparent to-100% lg:block"></div>
+    <div class="absolute inset-0 -z-20 hidden bg-gradient-to-t from-white/40 via-transparent to-transparent lg:block"></div>
+
+    <div class="relative mx-auto max-w-7xl px-5 pb-16 pt-4 sm:px-6 sm:pb-20 lg:flex lg:min-h-[700px] lg:items-center lg:px-6">
+      <div class="max-w-xl lg:max-w-2xl">
+        <div class="hp-rise hp-delay-1 inline-flex items-center gap-2 rounded-full border border-navy/15 bg-white/90 px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-navy shadow-xs backdrop-blur-xs">
+          <span class="h-2 w-2 rounded-full bg-brass"></span>
+          Houston, TX · {business.trustedPhrase}
+        </div>
+
+        <h1 class="hp-rise hp-delay-2 mt-4 font-display text-[2.4rem] font-black leading-[1.05] tracking-tight text-navy sm:text-5xl lg:mt-6 lg:max-w-2xl lg:text-6xl">
+          Plomería Profesional en Houston.
+          <span class="text-brass block mt-1">Cuidando Tu Hogar con Honestidad.</span>
+        </h1>
+
+        <p class="hp-rise hp-delay-3 mt-5 max-w-xl font-display text-lg font-semibold leading-relaxed text-navy/85 sm:text-xl">
+          En <strong>{business.name}</strong> resolvemos cualquier emergencia de plomería, fugas, drenajes y calentadores con técnicos certificados y trato cercano en tu propio idioma.
+        </p>
+
+        <!-- Mission Highlights -->
+        <div class="hp-rise hp-delay-4 mt-8 grid grid-cols-3 gap-0 py-5 sm:max-w-xl border-y border-navy/10">
+          <div class="px-3 text-center sm:px-4">
+            <div class="mb-2 flex justify-center text-water">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            </div>
+            <h3 class="font-display text-xs font-black uppercase text-navy sm:text-sm">Agua<br />Limpia</h3>
+            <p class="mt-1.5 text-[11px] font-semibold text-navy/70 leading-snug">Preservamos la pureza de tu suministro.</p>
+          </div>
+
+          <div class="border-x border-navy/10 px-3 text-center sm:px-4">
+            <div class="mb-2 flex justify-center text-brass">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </div>
+            <h3 class="font-display text-xs font-black uppercase text-navy sm:text-sm">Precios<br />Justos</h3>
+            <p class="mt-1.5 text-[11px] font-semibold text-navy/70 leading-snug">Sin tarifas ocultas ni sorpresas.</p>
+          </div>
+
+          <div class="px-3 text-center sm:px-4">
+            <div class="mb-2 flex justify-center text-flame">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <h3 class="font-display text-xs font-black uppercase text-navy sm:text-sm">Garantía<br />Total</h3>
+            <p class="mt-1.5 text-[11px] font-semibold text-navy/70 leading-snug">Respaldamos cada trabajo realizado.</p>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="hp-rise hp-delay-5 mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <a
+            href={business.phoneHref}
+            class="hp-lift inline-flex items-center justify-center gap-3 rounded-xl bg-navy px-8 py-4 font-display text-base font-bold text-white shadow-lg shadow-navy/20 hover:bg-navy-700 transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Llamar {business.phone}
+          </a>
+          <ScheduleButton class="px-8 py-4 text-base" label="Agendar Cita en Línea" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS / TRUST BAND -->
+  <section class="bg-navy-800 text-white border-y-4 border-brass">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 divide-x divide-white/10">
+      {stats.map((item) => (
+        <div class="px-6 py-7 text-center flex flex-col items-center justify-center">
+          <p class="font-display font-black text-3xl sm:text-4xl text-brass-light">{item.title}</p>
+          <p class="mt-1 text-xs sm:text-sm text-white/80 font-medium">{item.label}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section class="px-6 py-20">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brass/10 text-brass-dark font-display text-xs font-bold uppercase tracking-[0.2em]">
+          <span class="h-2 w-2 rounded-full bg-brass"></span>
+          Soluciones de Plomería
+        </span>
+        <h2 class="mt-3 font-display font-black text-3xl sm:text-4xl text-navy">
+          Servicios Diseñados para Proteger Tu Inversión
+        </h2>
+        <p class="text-navy/70 mt-3 max-w-2xl mx-auto text-base">
+          Atención integral para propietarios, inquilinos, administradores de fincas y constructores en Houston.
+        </p>
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {services.map((s) => (
+          <a href="/services" class="hp-lift group bg-white rounded-3xl p-8 border border-navy/10 shadow-sm hover:shadow-xl hover:border-brass/40 transition-all flex flex-col">
+            <div class={`inline-flex h-14 w-14 items-center justify-center rounded-2xl text-white ${s.accent === "water" ? "bg-water" : s.accent === "brass" ? "bg-brass" : "bg-flame"}`}>
+              {s.icon === "wrench" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              )}
+              {s.icon === "droplet" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              )}
+              {s.icon === "blueprint" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              )}
+            </div>
+            <h3 class="mt-6 font-display font-bold text-xl text-navy group-hover:text-water transition-colors">{s.title}</h3>
+            <p class="mt-2.5 text-navy/70 leading-relaxed text-sm flex-1">{s.desc}</p>
+            <div class="mt-6 pt-4 border-t border-navy/10 text-water font-display font-bold text-sm flex items-center justify-between">
+              <span>Explorar servicios</span>
+              <span>→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Deep links to specific service sub-pages -->
+      <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {serviceLinks.map((s) => (
+          <li>
+            <a
+              href={`/services/${s.id}`}
+              class="hp-lift group flex items-center justify-between gap-3 bg-white rounded-2xl border border-navy/10 hover:border-brass/40 px-5 py-4 shadow-xs transition-all"
+            >
+              <span class="font-display font-bold text-navy group-hover:text-water transition-colors text-sm">{s.data.h1}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brass shrink-0" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-10 text-center">
+        <a href="/services" class="inline-flex items-center gap-2 font-display font-bold text-water hover:text-navy transition-colors text-base">
+          <span>Ver catálogo completo de plomería</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER QUOTE BAND -->
+  <section class="bg-cream px-6 py-16 border-y border-navy/10">
+    <div class="max-w-5xl mx-auto grid gap-10 md:grid-cols-[auto_1fr] md:items-center">
+      <img
+        src="/images/placeholder.jpeg"
+        alt={`Equipo de trabajo de ${business.name}`}
+        width="220"
+        height="220"
+        loading="lazy"
+        class="h-44 w-44 md:h-52 md:w-52 rounded-3xl object-cover border-4 border-brass shadow-lg mx-auto"
+      />
+      <div>
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor" class="text-brass" aria-hidden="true"><path d="M9.5 4C6.5 4 4 6.5 4 9.5c0 3 2.5 5.5 5.5 5.5.3 0 .5 0 .8-.1-.6 2-2.3 3.6-4.3 4.1l.5 1.9c3.8-.9 6.7-4.4 6.7-8.4V9.5C13.2 6.5 11 4 9.5 4zm9 0C15.5 4 13 6.5 13 9.5c0 3 2.5 5.5 5.5 5.5.3 0 .5 0 .8-.1-.6 2-2.3 3.6-4.3 4.1l.5 1.9c3.8-.9 6.7-4.4 6.7-8.4V9.5C22.2 6.5 20 4 18.5 4z"/></svg>
+        <p class="mt-4 font-display font-black text-2xl sm:text-3xl text-navy leading-snug">
+          "Tratamos cada hogar de Houston como si fuera el nuestro: precios transparentes, explicaciones en tu idioma y un trabajo garantizado que dura años."
+        </p>
+        <p class="mt-4 font-semibold text-brass">— {business.founder}, {business.name}</p>
+        <div class="mt-6">
+          <a href="/meet-hugo" class="font-display font-bold text-water hover:text-navy transition-colors text-sm">
+            Conoce a nuestro equipo completo →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN POINTS -->
+  <section class="px-6 py-20 bg-navy text-white">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center">
+        <span class="font-display text-xs font-bold uppercase tracking-[0.2em] text-brass-light">¿Identificas estos síntomas?</span>
+        <h2 class="mt-2 font-display font-black text-3xl sm:text-4xl">¿Tienes Problemas en tus Tuberías o Drenajes?</h2>
+        <p class="text-white/70 mt-3 max-w-xl mx-auto text-base">Si alguna de estas situaciones te suena familiar, en {business.name} tenemos la solución inmediata.</p>
+      </div>
+
+      <ul class="mt-12 grid gap-4 sm:grid-cols-2">
+        {painPoints.map((p) => (
+          <li class="flex gap-3.5 items-start bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brass-light shrink-0 mt-0.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span class="text-white/90 text-sm sm:text-base leading-relaxed">{p}</span>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-12 text-center">
+        <ScheduleButton class="px-8 py-4 text-base" label="Solicitar Diagnóstico Ahora" />
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT GALLERY STRIP -->
+  <section class="px-6 py-20">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-end justify-between flex-wrap gap-4">
+        <div>
+          <span class="font-display font-bold text-brass uppercase tracking-[0.2em] text-xs">Calidad Visible</span>
+          <h2 class="mt-2 font-display font-black text-3xl sm:text-4xl text-navy">Galería de Trabajos Recientes</h2>
+        </div>
+        <a href="/projects" class="font-display font-bold text-water hover:text-navy transition-colors text-sm">
+          Ver todas las fotos →
+        </a>
+      </div>
+      <div class="mt-10 grid gap-4 grid-cols-2 lg:grid-cols-4">
+        {projects.map((p) => (
+          <div class="hp-zoom hp-lift rounded-2xl shadow-sm border border-navy/10 overflow-hidden bg-navy/5">
+            <img src={p.src} alt={p.alt} width="500" height="500" loading="lazy" class="h-56 w-full object-cover" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS / SOCIAL PROOF -->
+  <Reviews />
+
+  <!-- DYNAMIC BLOG TEASER / CMS POSTS -->
+  <section class="px-6 py-20 bg-cream border-t border-navy/10">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-end justify-between flex-wrap gap-4 mb-10">
+        <div>
+          <span class="font-display font-bold text-brass uppercase tracking-[0.2em] text-xs">Consejos de Expertos</span>
+          <h2 class="mt-2 font-display font-black text-3xl sm:text-4xl text-navy">Blog y Guías de Plomería</h2>
+        </div>
+        <a href="/blog" class="font-display font-bold text-water hover:text-navy transition-colors text-sm">
+          Ver todos los artículos →
+        </a>
+      </div>
+
+      {latestPosts.length > 0 ? (
+        <div class="grid gap-6 md:grid-cols-3">
+          {latestPosts.map((post) => {
+            const formattedDate = formatPostDate(post.published_at);
+            const imageUrl = post.featured_image_url || "/images/placeholder.jpeg";
+            return (
+              <article class="hp-lift group bg-white rounded-2xl overflow-hidden border border-navy/10 shadow-sm hover:shadow-xl flex flex-col transition-all">
+                <a href={`/blog/${post.slug}`} class="hp-zoom block relative aspect-[16/10] bg-navy-800/5 overflow-hidden">
+                  <img
+                    src={imageUrl}
+                    alt={post.title}
+                    width="500"
+                    height="300"
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </a>
+                <div class="p-6 flex flex-col flex-1">
+                  {formattedDate && (
+                    <time datetime={post.published_at ?? ""} class="text-xs font-semibold uppercase tracking-wider text-brass mb-2">
+                      {formattedDate}
+                    </time>
+                  )}
+                  <h3 class="font-display font-bold text-lg text-navy group-hover:text-water transition-colors leading-snug">
+                    <a href={`/blog/${post.slug}`}>{post.title}</a>
+                  </h3>
+                  {post.excerpt && (
+                    <p class="mt-2 text-sm text-navy/70 line-clamp-3 leading-relaxed flex-1">
+                      {post.excerpt}
+                    </p>
+                  )}
+                  <div class="mt-4 pt-3 border-t border-navy/10">
+                    <a href={`/blog/${post.slug}`} class="text-xs font-display font-bold text-water hover:text-navy transition-colors">
+                      Leer artículo completo →
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="rounded-3xl bg-navy text-white p-8 sm:p-12 relative overflow-hidden shadow-xl border-l-4 border-brass">
+          <div class="max-w-2xl">
+            <span class="font-display text-xs font-bold uppercase tracking-[0.2em] text-brass-light">Mantenimiento y Ahorro</span>
+            <h3 class="mt-2 font-display font-black text-2xl sm:text-3xl">Consejos Prácticos de Plomería para Evitar Fugas Costosas</h3>
+            <p class="mt-3 text-white/80 leading-relaxed text-sm sm:text-base">
+              Aprende a cuidar tu calentador de agua, detectar fugas silenciosas y desatascar drenajes de forma segura.
+            </p>
+            <div class="mt-6">
+              <a href="/blog" class="hp-lift inline-flex items-center gap-2 rounded-xl bg-brass px-6 py-3 font-display text-sm font-bold text-white shadow-md hover:bg-brass-dark transition-colors">
+                Explorar Nuestro Blog →
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CLOSING CTA BANNER -->
+  <section class="relative isolate overflow-hidden bg-flame text-white">
+    <div class="max-w-5xl mx-auto px-6 py-20 text-center">
+      <h2 class="font-display font-black text-3xl sm:text-5xl">
+        ¿Listo para Resolver tu Problema de Plomería?
+      </h2>
+      <p class="mt-4 text-lg text-white/90 max-w-2xl mx-auto">
+        Agenda tu cita en línea en menos de dos minutos o llámanos directamente al {business.phone} para atención de emergencia 24/7.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href={business.booking.pageUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-hcp-book
+          class="hp-lift inline-flex items-center justify-center bg-white text-flame hover:bg-cream px-8 py-4 rounded-xl font-display font-bold text-base transition-colors shadow-lg"
+        >
+          Agendar Cita en Línea
+        </a>
+        <a
+          href={business.phoneHref}
+          class="hp-lift inline-flex items-center justify-center gap-2 border-2 border-white text-white hover:bg-white hover:text-flame px-8 py-4 rounded-xl font-display font-bold text-base transition-colors"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          Llamar al {business.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

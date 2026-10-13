@@ -1,0 +1,149 @@
+---
+// Job application form — submitted via Netlify Forms
+import { business } from "../data/business";
+
+const positions = [
+  "Plomero Certificado / Master Plumber",
+  "Técnico de Drenajes y Alcantarillado",
+  "Instalador de Calentadores de Agua",
+  "Ayudante de Plomería / Apprentice",
+  "Servicio al Cliente y Despacho",
+  "Otro",
+];
+---
+<form
+  id="job-application-form"
+  name="job-application"
+  method="POST"
+  action="/apply-received"
+  enctype="multipart/form-data"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  class="grid gap-4"
+  data-phone={business.phone}
+>
+  <input type="hidden" name="form-name" value="job-application" />
+  <p class="hidden">
+    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+  </p>
+
+  <div class="grid gap-1">
+    <label for="ja-name" class="font-display font-semibold text-sm text-navy">Nombre Completo</label>
+    <input
+      id="ja-name"
+      name="name"
+      required
+      autocomplete="name"
+      placeholder="Tu nombre completo"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    />
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="grid gap-1">
+      <label for="ja-phone" class="font-display font-semibold text-sm text-navy">Teléfono</label>
+      <input
+        id="ja-phone"
+        name="phone"
+        type="tel"
+        required
+        autocomplete="tel"
+        placeholder="(346) 477-8912"
+        class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+      />
+    </div>
+
+    <div class="grid gap-1">
+      <label for="ja-email" class="font-display font-semibold text-sm text-navy">
+        Correo Electrónico <span class="text-navy/50 font-normal">(opcional)</span>
+      </label>
+      <input
+        id="ja-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        placeholder="tu@email.com"
+        class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+      />
+    </div>
+  </div>
+
+  <div class="grid gap-1">
+    <label for="ja-position" class="font-display font-semibold text-sm text-navy">Posición a la que postulas</label>
+    <select
+      id="ja-position"
+      name="position"
+      required
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    >
+      <option value="" disabled selected>Selecciona un puesto…</option>
+      {positions.map((p) => <option value={p}>{p}</option>)}
+    </select>
+  </div>
+
+  <div class="grid gap-1">
+    <label for="ja-experience" class="font-display font-semibold text-sm text-navy">
+      Años de Experiencia <span class="text-navy/50 font-normal">(opcional)</span>
+    </label>
+    <input
+      id="ja-experience"
+      name="experience"
+      placeholder="Ej. 3 años en plomería residencial"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    />
+  </div>
+
+  <div class="grid gap-1">
+    <label for="ja-message" class="font-display font-semibold text-sm text-navy">
+      Cuéntanos sobre ti <span class="text-navy/50 font-normal">(opcional)</span>
+    </label>
+    <textarea
+      id="ja-message"
+      name="message"
+      rows="4"
+      placeholder="Tu experiencia previa, licencias o certificaciones, disponibilidad…"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    ></textarea>
+  </div>
+
+  <div class="grid gap-1">
+    <label for="ja-resume" class="font-display font-semibold text-sm text-navy">
+      Currículum / Hoja de Vida <span class="text-navy/50 font-normal">(opcional — PDF o Word, máx. 5 MB)</span>
+    </label>
+    <input
+      id="ja-resume"
+      name="resume"
+      type="file"
+      accept=".pdf,.doc,.docx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
+      class="text-navy text-sm file:mr-3 file:rounded-xl file:border-0 file:bg-navy file:px-4 file:py-2.5 file:font-display file:font-semibold file:text-white hover:file:bg-navy-700 file:cursor-pointer border border-navy/20 bg-white rounded-xl py-1.5 px-2"
+    />
+  </div>
+
+  <button
+    type="submit"
+    id="ja-submit"
+    class="hp-lift mt-2 bg-navy hover:bg-navy-700 text-white px-6 py-3.5 rounded-xl font-display font-bold tracking-tight shadow-lg shadow-navy/25 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+  >
+    Enviar Postulación
+  </button>
+</form>
+
+<p id="ja-status" role="status" aria-live="polite" class="text-sm mt-3"></p>
+
+<script>
+  const form = document.getElementById("job-application-form") as HTMLFormElement | null;
+  const status = document.getElementById("ja-status");
+  const resume = document.getElementById("ja-resume") as HTMLInputElement | null;
+  const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+
+  if (form && status) {
+    form.addEventListener("submit", (e) => {
+      const file = resume?.files?.[0];
+      if (file && file.size > MAX_RESUME_BYTES) {
+        e.preventDefault();
+        status.textContent = "Tu archivo supera los 5 MB. Por favor sube un archivo más liviano.";
+        status.className = "text-sm text-red-700 font-medium";
+      }
+    });
+  }
+</script>

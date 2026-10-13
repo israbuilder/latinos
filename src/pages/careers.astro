@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import JobApplicationForm from "../components/JobApplicationForm.astro";
+import { business } from "../data/business";
+
+const perks = [
+  {
+    title: "Trabajo Estable Todo el Año",
+    body: "Houston es una ciudad con demanda constante. Nuestro equipo tiene trabajo continuo y crecemos año tras año desde " + business.yearFounded + ".",
+  },
+  {
+    title: "Pago Justo y Puntual",
+    body: "Compensación competitiva que premia el esfuerzo, la honestidad y la puntualidad — con el mismo trato digno que damos a nuestros clientes.",
+  },
+  {
+    title: "Crecimiento y Aprendizaje",
+    body: "Desde ayudantes y aprendices hasta plomeros certificados, apoyamos a nuestro equipo para que obtenga licencias y crezca profesionalmente.",
+  },
+  {
+    title: "Un Equipo que se Apoya",
+    body: "Trabaja en un ambiente familiar y respetuoso, junto a profesionales que se enorgullecen de hacer el trabajo bien hecho.",
+  },
+];
+---
+<BaseLayout
+  title={`Oportunidades de Empleo — Únete a ${business.name} | Houston, TX`}
+  description={`Buscamos plomeros certificados, aprendices y técnicos en Houston, TX. Aplica para unirte al equipo de ${business.name} — estabilidad laboral y excelente ambiente.`}
+  path="/careers"
+>
+  <!-- Banner -->
+  <section class="bg-navy text-white border-b-4 border-brass">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-brass-light">
+        <span class="h-2 w-2 rounded-full bg-brass"></span>
+        Contratación Activa en Houston
+      </div>
+      <h1 class="hp-rise mt-3 font-display font-black text-4xl sm:text-5xl">
+        Únete al Equipo de {business.name}
+      </h1>
+      <p class="mt-4 text-white/80 text-lg max-w-2xl leading-relaxed">
+        Buscamos personas trabajadoras, responsables y honestas que se sientan orgullosas de servir a la comunidad. Si te identificas, nos encantaría conocerte.
+      </p>
+    </div>
+  </section>
+
+  <!-- Why work here -->
+  <section class="max-w-6xl mx-auto px-6 py-16">
+    <h2 class="font-display font-black text-3xl text-navy">¿Por qué trabajar con {business.name}?</h2>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2">
+      {perks.map((perk) => (
+        <div class="bg-white rounded-2xl border border-navy/10 shadow-sm p-7 hover:border-brass/40 transition-all">
+          <h3 class="font-display font-bold text-xl text-navy">{perk.title}</h3>
+          <p class="mt-2.5 text-navy/70 leading-relaxed text-sm">{perk.body}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Application -->
+  <section class="bg-cream border-y border-navy/10">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="grid gap-12 md:grid-cols-2 md:items-start">
+        <div>
+          <h2 class="font-display font-black text-3xl text-navy">Postula hoy mismo</h2>
+          <p class="mt-3 text-navy/70 text-lg leading-relaxed">
+            Completa el siguiente formulario y adjunta tu currículum si cuentas con uno. Revisamos cada solicitud con detenimiento y contactamos a los candidatos preseleccionados.
+          </p>
+          <div class="mt-8 bg-navy text-white rounded-3xl p-8 shadow-xl border-t-4 border-brass">
+            <h3 class="font-display font-bold text-xl text-brass-light">¿Preguntas sobre nuestras vacantes?</h3>
+            <p class="mt-2 text-white/80 text-sm">Llámanos a nuestra oficina para más información:</p>
+            <a href={business.phoneHref} class="mt-4 block font-display font-black text-3xl hover:text-brass-light transition-colors">{business.phone}</a>
+            <p class="mt-2 text-xs text-brass-light font-semibold">{business.hoursDisplay}</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-navy/10 shadow-sm p-8 sm:p-10">
+          <h3 class="font-display font-bold text-2xl text-navy mb-1">Formulario de Postulación</h3>
+          <p class="mb-6 text-navy/65 text-sm">Cuéntanos sobre tu experiencia y habilidades.</p>
+          <JobApplicationForm />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

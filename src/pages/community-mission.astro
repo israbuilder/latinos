@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScheduleButton from "../components/ScheduleButton.astro";
+import { business } from "../data/business";
+---
+<BaseLayout
+  title={`Nuestra Misión y Compromiso Comunitario | ${business.name}`}
+  description={`${business.name} está dedicado a apoyar a la comunidad de Houston con plomería honesta, conservación del agua y asistencia técnica solidaria.`}
+  path="/community-mission"
+>
+  <!-- Hero Section -->
+  <section class="relative isolate overflow-hidden bg-navy-800 text-white">
+    <div class="max-w-6xl mx-auto px-6 py-20 lg:py-28 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brass/10 text-brass-light font-display text-xs font-bold uppercase tracking-[0.2em] mb-4">
+        <span class="h-2 w-2 rounded-full bg-brass"></span>
+        Compromiso con Nuestra Gente
+      </div>
+      <h1 class="hp-rise mt-2 font-display font-black text-4xl sm:text-5xl lg:text-6xl max-w-3xl mx-auto leading-tight">
+        Dedicados a Fortalecer a Nuestra Comunidad
+      </h1>
+      <p class="mt-6 text-white/80 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
+        Más que reparar tuberías o calentadores, creemos en devolverle a nuestra gente el apoyo recibido, cuidando a las familias y garantizando agua limpia y segura.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+        <a
+          href="/contact"
+          class="hp-lift inline-flex items-center justify-center bg-water hover:bg-water-light text-white px-8 py-3.5 rounded-xl font-display font-bold transition-colors"
+        >
+          Contáctanos
+        </a>
+        <ScheduleButton class="px-8 py-3.5" label="Solicitar Servicio" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillars Section -->
+  <section class="py-20 px-6 max-w-6xl mx-auto">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <h2 class="font-display font-black text-3xl sm:text-4xl text-navy">
+        Nuestros Tres Principios Fundamentales
+      </h2>
+      <p class="mt-4 text-navy/70 text-lg">
+        Cómo {business.name} genera un impacto positivo cada día en el Gran Houston.
+      </p>
+    </div>
+
+    <div class="grid gap-8 md:grid-cols-3">
+      <div class="bg-white rounded-3xl p-8 shadow-sm border border-navy/10 flex flex-col justify-between hover:border-brass/40 transition-all">
+        <div>
+          <div class="w-14 h-14 rounded-2xl bg-water/10 flex items-center justify-center text-water font-bold text-2xl mb-6">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-navy">Conservación de Agua</h3>
+          <p class="mt-3 text-navy/75 leading-relaxed text-sm">
+            Detectamos fugas invisibles, instalamos griferías de alta eficiencia y evitamos el desperdicio del recurso hídrico en cada hogar y negocio.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl p-8 shadow-sm border border-navy/10 flex flex-col justify-between hover:border-brass/40 transition-all">
+        <div>
+          <div class="w-14 h-14 rounded-2xl bg-brass/10 flex items-center justify-center text-brass font-bold text-2xl mb-6">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-navy">Apoyo a Familias Locales</h3>
+          <p class="mt-3 text-navy/75 leading-relaxed text-sm">
+            Brindamos orientación transparente en español e inglés, tarifas justas sin sorpresas y descuentos especiales para adultos mayores y familias trabajadoras.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl p-8 shadow-sm border border-navy/10 flex flex-col justify-between hover:border-brass/40 transition-all">
+        <div>
+          <div class="w-14 h-14 rounded-2xl bg-flame/10 flex items-center justify-center text-flame font-bold text-2xl mb-6">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-xl text-navy">Disponibilidad 24/7</h3>
+          <p class="mt-3 text-navy/75 leading-relaxed text-sm">
+            Las emergencias no esperan horarios de oficina. Mantenemos unidades de guardia nocturna y fines de semana para que ninguna familia se quede sin agua o con inundaciones.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-navy text-white py-16 px-6 border-t-4 border-brass">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="font-display font-black text-3xl sm:text-4xl">
+        ¿Necesitas Plomería Honesta y Confiable en Houston?
+      </h2>
+      <p class="mt-4 text-white/80 text-lg">
+        Llámanos hoy mismo al <a href={business.phoneHref} class="font-bold text-brass-light hover:underline">{business.phone}</a> o agenda una visita en línea.
+      </p>
+      <div class="mt-8 flex justify-center">
+        <ScheduleButton class="px-8 py-4 text-lg" label="Solicitar Cita en Línea" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

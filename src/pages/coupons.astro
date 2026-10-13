@@ -1,0 +1,244 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScheduleButton from "../components/ScheduleButton.astro";
+import { business } from "../data/business";
+
+const fine = "No acumulable con otras promociones o descuentos. Debe presentarse al técnico al inicio del servicio. Válido un cupón por visita.";
+const coupons = [
+  { amount: "$30.00 OFF", title: "Cualquier Reparación", detail: "Inodoros, lavabos, llaves, tuberías, etc." },
+  { amount: "$30.00 OFF", title: "Reemplazo de Accesorios", detail: "Inodoros, grifos, trituradores, llaves de paso." },
+  { amount: "$200.00 OFF", title: "Calentador de Agua", detail: "En instalación o cambio de calentadores de alta eficiencia." },
+  { amount: "$300.00 OFF", title: "Repiping Completo", detail: "Cambio total de tuberías de agua o gas en el hogar." },
+];
+---
+<BaseLayout
+  title={`Cupones y Ofertas Especiales | ${business.name}`}
+  description={`Ahorra en tus reparaciones de plomería con los cupones exclusivos de ${business.name} en Houston, TX. Descuentos en calentadores, drenajes y tuberías.`}
+  path="/coupons"
+>
+  <!-- Banner -->
+  <section class="bg-navy text-white border-b-4 border-brass">
+    <div class="max-w-5xl mx-auto px-6 py-10 sm:py-16">
+      <div class="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-brass-light">
+        <span class="h-2 w-2 rounded-full bg-brass"></span>
+        Ahorro para Nuestra Gente
+      </div>
+      <h1 class="hp-rise mt-3 font-display font-black text-3xl sm:text-5xl">
+        ¡Obtén tus Cupones de Descuento!
+      </h1>
+      <p class="mt-3 text-white/80 text-base max-w-xl">
+        Aprovecha nuestras promociones vigentes y ahorra hasta $300 en tu próximo servicio en Houston.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-6 py-8 sm:py-16 max-w-5xl mx-auto">
+    <div id="coupon-wrap" class="relative" data-locked>
+      <p id="coupon-msg" role="status" aria-live="polite" class="hidden mb-6 text-center font-display font-bold text-lg"></p>
+
+      <div id="coupon-grid" class="grid gap-8 sm:grid-cols-2">
+        {coupons.map((c) => (
+          <div class="hp-lift relative flex flex-col bg-white rounded-3xl shadow-lg border-2 border-dashed border-brass overflow-hidden">
+            <div class="flex-1 p-8 text-center">
+              <span class="inline-block bg-flame text-white font-display font-bold text-xs uppercase tracking-[0.2em] px-3.5 py-1 rounded-full">
+                Cupón Exclusivo
+              </span>
+              <p class="mt-4 font-display font-black text-4xl sm:text-5xl text-navy">{c.amount}</p>
+              <h2 class="mt-3 font-display font-black text-xl text-navy">{c.title}</h2>
+              <p class="mt-2 text-navy/70 text-sm">{c.detail}</p>
+            </div>
+
+            <div class="px-8 pb-8">
+              <ScheduleButton class="w-full px-8 py-4 text-base" label="Usar Cupón y Agendar" />
+              <p class="mt-4 flex items-center justify-center gap-1.5 text-xs font-bold text-navy/60">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                Toma una captura de pantalla y preséntala
+              </p>
+              <p class="mt-3 text-[11px] text-navy/45 italic leading-relaxed text-center">{fine}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Capture gate -->
+      <div id="coupon-gate" class="absolute inset-0 z-10 flex items-start justify-center px-2 pt-2 sm:pt-14">
+        <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border-2 border-brass p-7 sm:p-9">
+          <div class="w-12 h-12 rounded-2xl bg-brass/10 text-brass flex items-center justify-center mx-auto mb-4">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+              <line x1="16" x2="16" y1="2" y2="6"/>
+              <line x1="8" x2="8" y1="2" y2="6"/>
+              <line x1="3" x2="21" y1="10" y2="10"/>
+            </svg>
+          </div>
+          <h2 class="font-display font-black text-2xl text-navy text-center">Desbloquea tus Cupones de Ahorro</h2>
+          <p class="mt-2 text-navy/70 text-center text-sm">
+            Ingresa tus datos para recibir los cupones instantáneamente en tu celular por mensaje de texto.
+          </p>
+          <form id="coupon-form" class="mt-6 grid gap-4" data-phone={business.phone}>
+            <div class="grid gap-1">
+              <label for="cl-name" class="font-display font-semibold text-sm text-navy">Nombre</label>
+              <input
+                id="cl-name"
+                name="name"
+                required
+                autocomplete="name"
+                placeholder="Tu nombre completo"
+                class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+              />
+            </div>
+            <div class="grid gap-1">
+              <label for="cl-phone" class="font-display font-semibold text-sm text-navy">Número de Celular</label>
+              <input
+                id="cl-phone"
+                name="phone"
+                type="tel"
+                required
+                autocomplete="tel"
+                placeholder="(346) 477-8912"
+                class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+              />
+            </div>
+            <button
+              type="submit"
+              id="cl-submit"
+              class="hp-lift mt-1 bg-flame hover:bg-[#c2410c] text-white px-5 py-3.5 rounded-xl font-display font-bold tracking-tight shadow-lg shadow-flame/25 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              Recibir Mis Cupones por SMS
+            </button>
+            <p class="text-[11px] leading-relaxed text-navy/50 text-center">
+              Al enviar aceptas recibir un mensaje SMS con tus cupones válidos.
+            </p>
+          </form>
+          <p id="cl-status" role="status" aria-live="polite" class="mt-2 text-sm text-center"></p>
+        </div>
+      </div>
+    </div>
+
+    <p class="mt-12 text-center text-navy/70 text-sm">
+      ¿Dudas con los cupones? Llámanos al
+      <a href={business.phoneHref} class="font-bold text-water hover:text-navy transition-colors">{business.phone}</a>
+      y menciónalos al momento de reservar.
+    </p>
+  </section>
+
+  <style>
+    #coupon-wrap[data-locked] #coupon-grid {
+      filter: blur(10px);
+      pointer-events: none;
+      user-select: none;
+    }
+    #coupon-grid {
+      transition: filter 0.5s ease;
+    }
+    #coupon-wrap:not([data-locked]) #coupon-gate {
+      display: none;
+    }
+  </style>
+
+  <script is:inline>
+    try {
+      if (localStorage.getItem("hp_coupons_unlocked") === "1") {
+        document.getElementById("coupon-wrap").removeAttribute("data-locked");
+      }
+    } catch (e) {}
+  </script>
+
+  <script>
+    const wrap = document.getElementById("coupon-wrap");
+    const gate = document.getElementById("coupon-gate");
+    const form = document.getElementById("coupon-form") as HTMLFormElement | null;
+    const status = document.getElementById("cl-status");
+    const msg = document.getElementById("coupon-msg");
+    const submit = document.getElementById("cl-submit") as HTMLButtonElement | null;
+
+    const leadSource = (): string => {
+      try {
+        const m = document.cookie.match(/(?:^|; )hp_attrib=([^;]+)/);
+        if (!m) return "direct / none";
+        const a = JSON.parse(decodeURIComponent(m[1]));
+        const parts = [a.src || "?", a.med || "?"];
+        if (a.camp) parts.push(a.camp);
+        if (a.cont) parts.push(a.cont);
+        let s = parts.join(" / ");
+        if (a.lp) s += ` — landed ${a.lp}`;
+        if (a.d) s += ` on ${a.d}`;
+        return s;
+      } catch {
+        return "unknown";
+      }
+    };
+
+    const unlock = () => {
+      wrap?.removeAttribute("data-locked");
+    };
+
+    const showMsg = (text: string, colorClass: string) => {
+      if (!msg) return;
+      msg.textContent = text;
+      msg.className = `mb-6 text-center font-display font-bold text-lg ${colorClass}`;
+    };
+
+    if (wrap && gate && form && status && submit) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const phoneDigits = (
+          (form.elements.namedItem("phone") as HTMLInputElement)?.value ?? ""
+        ).replace(/\D/g, "");
+        const national =
+          phoneDigits.length === 11 && phoneDigits.startsWith("1")
+            ? phoneDigits.slice(1)
+            : phoneDigits;
+        if (national.length !== 10) {
+          status.textContent = "Por favor verifica tu número de celular (10 dígitos).";
+          status.className = "mt-2 text-sm text-center text-red-700 font-medium";
+          return;
+        }
+
+        submit.disabled = true;
+        status.textContent = "Enviando tus cupones…";
+        status.className = "mt-2 text-sm text-center text-gray-600";
+
+        try {
+          const netlifyBody = new URLSearchParams();
+          netlifyBody.append("form-name", "coupon-lead");
+          for (const [k, v] of new FormData(form).entries()) {
+            netlifyBody.append(k, typeof v === "string" ? v : "");
+          }
+          netlifyBody.append("lead_source", leadSource());
+          fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: netlifyBody.toString(),
+          }).catch(() => {});
+        } catch {}
+
+        try {
+          const body = new FormData(form);
+          body.append("lead_source", leadSource());
+          const res = await fetch("/api/coupon-lead", { method: "POST", body });
+          const data = await res.json().catch(() => ({}));
+
+          if (res.ok && data.ok) {
+            try {
+              localStorage.setItem("hp_coupons_unlocked", "1");
+            } catch {}
+            showMsg("📲 ¡Cupones enviados! Revisa tus mensajes de texto.", "text-emerald-700");
+            unlock();
+          } else if (res.status === 400) {
+            submit.disabled = false;
+            status.textContent = "Por favor verifica tu nombre y número de celular.";
+            status.className = "mt-2 text-sm text-center text-red-700 font-medium";
+          } else {
+            showMsg("Guarda o toma captura de tus cupones a continuación.", "text-navy/80");
+            unlock();
+          }
+        } catch {
+          showMsg("Guarda o toma captura de tus cupones a continuación.", "text-navy/80");
+          unlock();
+        }
+      });
+    }
+  </script>
+</BaseLayout>

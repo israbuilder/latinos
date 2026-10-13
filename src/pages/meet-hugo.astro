@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScheduleButton from "../components/ScheduleButton.astro";
+import { business } from "../data/business";
+---
+<BaseLayout
+  title={`Sobre Nosotros | ${business.name}`}
+  description={`Conoce a ${business.founder} y al equipo detrás de ${business.name}. Respaldando a Houston con honestidad y el mejor servicio de plomería.`}
+  path="/meet-hugo"
+>
+  <!-- Banner -->
+  <section class="bg-navy text-white border-b-4 border-brass">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-brass-light">
+        <span class="h-2 w-2 rounded-full bg-brass"></span>
+        Nuestra Historia y Pasión
+      </div>
+      <h1 class="hp-rise mt-3 font-display font-black text-4xl sm:text-5xl">Conoce a Nuestro Equipo</h1>
+      <p class="mt-4 text-white/80 text-lg max-w-2xl leading-relaxed">
+        Profesionales hispanos comprometidos con la calidad, el trato respetuoso y la solución definitiva a tus problemas de plomería.
+      </p>
+    </div>
+  </section>
+
+  <section class="px-6 py-16 max-w-6xl mx-auto">
+    <div class="grid gap-12 md:grid-cols-2 md:items-center">
+      <div class="hp-zoom rounded-3xl shadow-xl border-4 border-brass overflow-hidden bg-navy/5">
+        <img
+          src="/images/placeholder.jpeg"
+          alt={`Equipo de trabajo en ${business.name}`}
+          width="600"
+          height="600"
+          loading="eager"
+          class="w-full object-cover aspect-square"
+        />
+      </div>
+      <div>
+        <span class="font-display text-xs font-bold uppercase tracking-[0.2em] text-brass">Liderazgo &amp; Experiencia</span>
+        <h2 class="mt-2 font-display font-black text-3xl text-navy">
+          Servicio de Primera Mano con {business.founder}
+        </h2>
+        <p class="text-navy/80 text-base leading-relaxed mt-4">
+          Bajo la dirección de <strong>{business.founder}</strong>, en <strong>{business.name}</strong> nos hemos dedicado a resolver las necesidades de plomería de cientos de familias y empresas en Houston, Katy, Cypress, The Woodlands y alrededores.
+        </p>
+        <p class="text-navy/80 text-base leading-relaxed mt-3">
+          Sabemos el valor de tu esfuerzo y tu hogar. Por eso, no creemos en soluciones temporales ni costos sorpresa: inspeccionamos con seriedad, explicamos claramente en tu idioma y respaldamos cada trabajo con garantía total.
+        </p>
+        <div class="mt-6 p-5 rounded-2xl bg-cream border-l-4 border-brass">
+          <p class="font-display text-lg font-bold text-navy italic">
+            "{business.trustedPhrase}"
+          </p>
+          <p class="mt-2 text-xs font-bold text-brass uppercase tracking-wider">— {business.founder}, Fundador</p>
+        </div>
+        <div class="mt-8 flex flex-col sm:flex-row items-center gap-4">
+          <ScheduleButton class="w-full sm:w-auto px-7 py-3.5 text-base" label="Agendar con Nosotros" />
+          <a href={business.phoneHref} class="font-display font-bold text-navy hover:text-water transition-colors text-base">
+            O llámanos: {business.phone} →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust band -->
+  <section class="relative isolate overflow-hidden bg-navy-800 text-white border-t-4 border-brass">
+    <div class="max-w-4xl mx-auto px-6 py-20 text-center">
+      <h2 class="font-display font-black text-3xl sm:text-4xl">Un Equipo en el que Puedes Confiar Plenamente</h2>
+      <p class="mt-4 text-white/85 text-lg leading-relaxed">
+        {business.trustedPhrase} · {business.license} · {business.rating.value}★ de satisfacción garantizada en Google.
+      </p>
+      <div class="mt-8 flex justify-center">
+        <ScheduleButton class="px-8 py-4 text-lg" label="Solicitar Inspección Hoy" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

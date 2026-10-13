@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScheduleButton from "../components/ScheduleButton.astro";
+import RequestServiceForm from "../components/RequestServiceForm.astro";
+import { business } from "../data/business";
+---
+<BaseLayout
+  title={`Contacto | ${business.name} — Plomeros en Houston, TX`}
+  description={`Contáctanos en ${business.name}. Agenda tu cita en línea, llámanos directamente al ${business.phone} o envía un mensaje y te responderemos de inmediato.`}
+  path="/contact"
+>
+  <!-- Banner -->
+  <section class="bg-navy text-white border-b-4 border-brass">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <div class="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-brass-light">
+        <span class="h-2 w-2 rounded-full bg-brass"></span>
+        Atención Rápida
+      </div>
+      <h1 class="hp-rise mt-3 font-display font-black text-4xl sm:text-5xl">
+        Contáctate con {business.name}
+      </h1>
+      <p class="mt-4 text-white/80 text-lg max-w-2xl leading-relaxed">
+        ¿Tienes una fuga, problema de drenaje o necesitas un presupuesto? Llámanos las 24 horas o déjanos un mensaje.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid gap-12 md:grid-cols-2">
+      <!-- Contact details -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-3xl border border-navy/10 shadow-sm p-8">
+          <h2 class="font-display font-black text-xl text-navy">Agendar Cita en Línea</h2>
+          <p class="mt-2 text-navy/70 text-sm leading-relaxed">
+            Elige la fecha y horario más conveniente para tu inspección o reparación.
+          </p>
+          <div class="mt-5">
+            <ScheduleButton class="px-7 py-3.5" label="Abrir Calendario" />
+          </div>
+        </div>
+
+        <div class="bg-navy text-white rounded-3xl p-8 shadow-xl border-t-4 border-brass">
+          <span class="font-display text-xs font-bold uppercase tracking-[0.2em] text-brass-light">Línea Directa 24/7</span>
+          <h2 class="font-display font-black text-xl text-white mt-1">Llámanos por Teléfono</h2>
+          <a href={business.phoneHref} class="mt-3 block font-display font-black text-3xl sm:text-4xl hover:text-brass-light transition-colors">
+            {business.phone}
+          </a>
+          <p class="mt-2 text-sm text-brass-light font-semibold">{business.hoursDisplay}</p>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-navy/10 shadow-sm p-8">
+          <h2 class="font-display font-black text-xl text-navy">Ubicación y Cobertura</h2>
+          <p class="mt-2 text-navy/70 text-sm leading-relaxed">{business.address}</p>
+          <p class="mt-1 text-xs text-navy/50">Servicio en todo {business.areaServed} y municipios circundantes.</p>
+        </div>
+      </div>
+
+      <!-- Request service form -->
+      <div class="bg-white rounded-3xl border border-navy/10 shadow-sm p-8 sm:p-10">
+        <h2 class="font-display font-black text-2xl text-navy">Envíanos un Mensaje</h2>
+        <p class="mt-2 mb-6 text-navy/70 text-sm">Cuéntanos qué problema tienes y un técnico te contactará en breve.</p>
+        <RequestServiceForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ScheduleButton from "../components/ScheduleButton.astro";
+import { business } from "../data/business";
+
+const links = [
+  { href: "/services", label: "Servicios de Plomería" },
+  { href: "/areas-we-serve", label: "Áreas que Atendemos" },
+  { href: "/coupons", label: "Cupones y Ofertas" },
+  { href: "/blog", label: "Blog y Consejos" },
+  { href: "/contact", label: "Contáctanos" },
+];
+---
+<BaseLayout
+  title={`Página No Encontrada | ${business.name}`}
+  description={`No pudimos encontrar esta página. Explora los servicios de plomería, coberturas y más de ${business.name} o llámanos las 24 horas.`}
+  path="/404"
+>
+  <section class="px-6 py-24 text-center">
+    <div class="max-w-2xl mx-auto">
+      <p class="font-display font-black text-8xl text-brass">404</p>
+      <h1 class="mt-4 font-display font-black text-3xl sm:text-4xl text-navy">Parece que hubo una fuga de ruta</h1>
+      <p class="mt-4 text-navy/70 text-lg leading-relaxed">
+        No pudimos encontrar la página que buscas, pero sí podemos resolver cualquier problema en tus instalaciones. Elige una de estas opciones o llámanos 24/7 al
+        <a href={business.phoneHref} class="font-bold text-water hover:text-navy transition-colors">{business.phone}</a>.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        {links.map((l) => (
+          <a href={l.href} class="hp-lift bg-white border border-navy/10 rounded-xl px-5 py-3 font-display font-bold text-navy shadow-sm hover:border-brass/40 hover:text-water transition-colors">{l.label}</a>
+        ))}
+      </div>
+      <div class="mt-10 flex justify-center"><ScheduleButton class="px-8 py-3.5 text-base" label="Ir al Inicio o Agendar" /></div>
+    </div>
+  </section>
+</BaseLayout>

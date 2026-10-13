@@ -1,0 +1,154 @@
+---
+// Request Service form. Native POST to /api/request-service
+import { business } from "../data/business";
+---
+<form
+  id="request-service-form"
+  method="POST"
+  action="/api/request-service"
+  class="grid gap-4"
+  data-phone={business.phone}
+>
+  <div class="grid gap-1">
+    <label for="rs-name" class="font-display font-semibold text-sm text-navy">Nombre Completo</label>
+    <input
+      id="rs-name"
+      name="name"
+      required
+      autocomplete="name"
+      placeholder="Tu nombre y apellido"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    />
+  </div>
+
+  <div class="grid gap-1">
+    <label for="rs-phone" class="font-display font-semibold text-sm text-navy">Teléfono</label>
+    <input
+      id="rs-phone"
+      name="phone"
+      type="tel"
+      required
+      autocomplete="tel"
+      placeholder="(346) 477-8912"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    />
+  </div>
+
+  <div class="grid gap-1">
+    <label for="rs-email" class="font-display font-semibold text-sm text-navy">
+      Correo Electrónico <span class="text-navy/50 font-normal">(opcional)</span>
+    </label>
+    <input
+      id="rs-email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      placeholder="tucorreo@ejemplo.com"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    />
+  </div>
+
+  <div class="grid gap-1">
+    <label for="rs-address" class="font-display font-semibold text-sm text-navy">
+      Dirección del Servicio <span class="text-navy/50 font-normal">(opcional)</span>
+    </label>
+    <input
+      id="rs-address"
+      name="address"
+      autocomplete="street-address"
+      placeholder="123 Main St, Houston, TX"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    />
+  </div>
+
+  <div class="grid gap-1">
+    <label for="rs-problem" class="font-display font-semibold text-sm text-navy">¿Cuál es el problema o servicio requerido?</label>
+    <textarea
+      id="rs-problem"
+      name="problem"
+      required
+      rows="4"
+      placeholder="Describe brevemente el problema (fuga, calentador de agua, drenaje tapado, etc.)…"
+      class="border border-navy/20 bg-white px-3.5 py-2.5 rounded-xl text-navy focus:outline-none focus:ring-2 focus:ring-water focus:border-water transition"
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    id="rs-submit"
+    class="hp-lift mt-2 bg-flame hover:bg-[#c2410c] text-white px-6 py-3.5 rounded-xl font-display font-bold tracking-tight shadow-lg shadow-flame/25 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+  >
+    Solicitar Servicio Ahora
+  </button>
+</form>
+
+<p id="rs-status" role="status" aria-live="polite" class="text-sm mt-3"></p>
+
+<script>
+  const form = document.getElementById("request-service-form") as HTMLFormElement | null;
+  const status = document.getElementById("rs-status");
+  const submit = document.getElementById("rs-submit") as HTMLButtonElement | null;
+  const phone = form?.dataset.phone ?? "nosotros";
+
+  const leadSource = (): string => {
+    try {
+      const m = document.cookie.match(/(?:^|; )hp_attrib=([^;]+)/);
+      if (!m) return "direct / none";
+      const a = JSON.parse(decodeURIComponent(m[1]));
+      const parts = [a.src || "?", a.med || "?"];
+      if (a.camp) parts.push(a.camp);
+      if (a.cont) parts.push(a.cont);
+      let s = parts.join(" / ");
+      if (a.lp) s += ` — landed ${a.lp}`;
+      if (a.d) s += ` on ${a.d}`;
+      return s;
+    } catch {
+      return "unknown";
+    }
+  };
+
+  if (form && status && submit) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      submit.disabled = true;
+      status.textContent = "Enviando solicitud…";
+      status.className = "text-sm text-gray-600";
+      const source = leadSource();
+
+      try {
+        const netlifyBody = new URLSearchParams();
+        netlifyBody.append("form-name", "request-service");
+        for (const [k, v] of new FormData(form).entries()) {
+          netlifyBody.append(k, typeof v === "string" ? v : "");
+        }
+        netlifyBody.append("lead_source", source);
+        fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: netlifyBody.toString(),
+        }).catch(() => {});
+      } catch {}
+
+      try {
+        const apiBody = new FormData(form);
+        apiBody.append("lead_source", source);
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: apiBody,
+        });
+        if (res.ok) {
+          form.reset();
+          form.hidden = true;
+          status.textContent = "¡Gracias! Recibimos tu solicitud y te contactaremos en minutos.";
+          status.className = "text-sm text-emerald-700 font-semibold p-3 bg-emerald-50 rounded-xl border border-emerald-200";
+        } else {
+          throw new Error(`HTTP ${res.status}`);
+        }
+      } catch {
+        submit.disabled = false;
+        status.textContent = `Hubo un error al enviar. Por favor llámanos directamente al ${phone}.`;
+        status.className = "text-sm text-rose-700 font-semibold p-3 bg-rose-50 rounded-xl border border-rose-200";
+      }
+    });
+  }
+</script>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { business } from "../data/business";
+---
+<BaseLayout
+  title={`Postulación Recibida — Empleos en ${business.name}`}
+  description={`Gracias por tu interés en unirte al equipo de ${business.name}. Hemos recibido tu postulación.`}
+  path="/apply-received"
+>
+  <section class="bg-navy text-white border-b-4 border-brass">
+    <div class="max-w-6xl mx-auto px-6 py-16">
+      <p class="font-display font-bold text-brass-light uppercase tracking-[0.2em] text-sm">Muchas Gracias</p>
+      <h1 class="hp-rise mt-3 font-display font-black text-4xl sm:text-5xl">Postulación Recibida</h1>
+    </div>
+  </section>
+
+  <section class="max-w-3xl mx-auto px-6 py-16">
+    <div class="bg-white rounded-3xl border border-navy/10 shadow-sm p-8 sm:p-12 text-center">
+      <div class="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 mb-6">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2 class="font-display font-black text-2xl text-navy">¡Tu solicitud ha sido enviada con éxito!</h2>
+      <p class="mt-4 text-navy/80 text-lg leading-relaxed">
+        Gracias por tu interés en formar parte de {business.name}. Nuestro equipo de recursos humanos revisará tu perfil y experiencia. Si coincide con nuestras vacantes actuales, te contactaremos a la brevedad.
+      </p>
+      <p class="mt-4 text-navy/70 text-sm">
+        ¿Tienes preguntas adicionales? Puedes llamarnos al
+        <a href={business.phoneHref} class="font-display font-bold text-brass hover:text-navy transition-colors">{business.phone}</a>.
+      </p>
+      <div class="mt-8 flex justify-center gap-4">
+        <a href="/" class="hp-lift inline-flex items-center justify-center rounded-xl bg-navy px-7 py-3.5 font-display font-bold text-white shadow-md hover:bg-navy-700 transition-colors">
+          Volver al Inicio
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
