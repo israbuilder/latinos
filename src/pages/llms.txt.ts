@@ -1,11 +1,8 @@
-// src/pages/llms.txt.ts
 import type { APIRoute } from 'astro';
 
-// Renderizado bajo demanda (SSR) para garantizar que la información esté siempre fresca
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
-  // 1. Obtener la variable de entorno de forma compatible (Vite + Node SSR)
   const envUrl =
     import.meta.env.PUBLIC_API_URL ||
     (typeof process !== 'undefined' ? process.env.PUBLIC_API_URL : undefined);
@@ -18,14 +15,12 @@ export const GET: APIRoute = async () => {
     });
   }
 
-  // 2. Normalizar la URL base (elimina barras finales o sufijos accidentales como /posts)
   const siteApiBase = envUrl
     .trim()
     .replace(/\/+$/, '')
     .replace(/\/posts\/?$/, '');
 
   try {
-    // 3. Consultar el archivo llms.txt generado por el CRM
     const res = await fetch(`${siteApiBase}/llms.txt`, {
       cache: 'no-store',
       headers: {
@@ -35,7 +30,10 @@ export const GET: APIRoute = async () => {
     });
 
     if (!res.ok) {
-      throw new Error(`CRM returned HTTP ${res.status}`);
+      return new Response('# Not Found\n\nNo llms.txt found for this site in CMS API.', {
+        status: res.status,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
     }
 
     const markdown = await res.text();
@@ -48,7 +46,7 @@ export const GET: APIRoute = async () => {
     });
   } catch (error) {
     console.error('[llms.txt] Error fetching from CRM:', error);
-    return new Response('# Service Temporarily Unavailable\n\nPlease check back soon.', {
+    return new Response('# Service Unavailable\n\nCould not fetch llms.txt from API.', {
       status: 503,
       headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     });
