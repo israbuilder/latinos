@@ -1,0 +1,101 @@
+---
+import OrgHeader from "../components/OrgHeader.astro";
+import OrgFooter from "../components/OrgFooter.astro";
+import type { Locale } from "../data/orgData";
+import { orgConfig } from "../data/orgData";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  currentLocale?: Locale;
+  path?: string;
+}
+
+const {
+  title,
+  description,
+  currentLocale = "es",
+  path = "",
+} = Astro.props;
+
+const canonical = `https://latinos.org${path}`;
+const isEs = currentLocale === "es";
+---
+
+<!doctype html>
+<html lang={currentLocale} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={isEs ? "es_US" : "en_US"} />
+    <meta property="og:site_name" content={orgConfig.name} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured Data (Schema.org Organization & Community Service) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "NGO",
+      "name": orgConfig.name,
+      "legalName": orgConfig.fullName[currentLocale],
+      "url": "https://latinos.org",
+      "telephone": orgConfig.contact.phone,
+      "email": orgConfig.contact.email,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1927 W. McKinney St.",
+        "addressLocality": "Houston",
+        "addressRegion": "TX",
+        "postalCode": "77019",
+        "addressCountry": "US"
+      },
+      "description": orgConfig.missionStatement[currentLocale],
+      "serviceArea": {
+        "@type": "Country",
+        "name": "United States"
+      },
+      "knowsAbout": [
+        "Individual Tax Filing",
+        "ITIN Number Application",
+        "IRS Payment Agreements",
+        "Immigration Form Preparation",
+        "Family Coaching & Support"
+      ]
+    })} />
+  </head>
+  <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans selection:bg-amber-400 selection:text-slate-900">
+    <OrgHeader currentLocale={currentLocale} />
+    
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <OrgFooter currentLocale={currentLocale} />
+  </body>
+</html>

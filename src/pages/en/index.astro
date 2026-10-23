@@ -1,0 +1,315 @@
+---
+import OrgLayout from "../../layouts/OrgLayout.astro";
+import TaxCalculator from "../../components/TaxCalculator.astro";
+import AssistanceForm from "../../components/AssistanceForm.astro";
+import { orgConfig, mainServices } from "../../data/orgData";
+import { uiTranslations } from "../../data/translations";
+
+const locale = "en";
+const t = uiTranslations[locale];
+
+const taxesService = mainServices.find((s) => s.slug === "pago-de-taxes")!;
+const migrationService = mainServices.find((s) => s.slug === "casos-de-migracion")!;
+const coachingService = mainServices.find((s) => s.slug === "couch-familiar")!;
+---
+
+<OrgLayout
+  title="Latinos Org | Tax Filing & Payments, Immigration Cases, and Family Coaching"
+  description="Comprehensive Hispanic community support platform specialized in Tax Filing & IRS Payments (ITIN/SSN), immigration form readiness, and bilingual family coaching."
+  currentLocale={locale}
+  path="/en"
+>
+  <!-- HERO SECTION -->
+  <section class="relative isolate overflow-hidden bg-gradient-to-b from-blue-950 via-slate-900 to-slate-900 text-white py-20 lg:py-28">
+    <div class="absolute inset-0 -z-10 opacity-15 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px]"></div>
+    
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 font-display text-xs font-bold uppercase tracking-wider mb-6 animate-pulse">
+        <span class="h-2 w-2 rounded-full bg-amber-400"></span>
+        {t.hero.badge}
+      </div>
+
+      <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight sm:leading-none tracking-tight">
+        {t.hero.headlineStart}
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-200 underline decoration-amber-500 decoration-wavy decoration-2">
+          {t.hero.headlineHighlight}
+        </span>
+        {t.hero.headlineEnd}
+      </h1>
+
+      <p class="mt-6 text-slate-300 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed font-normal">
+        {t.hero.description}
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/en#taxes"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-base px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{t.hero.ctaPrimary}</span>
+        </a>
+
+        <a
+          href="/en#contacto"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-base px-8 py-4 rounded-xl border border-white/20 transition-all"
+        >
+          <span>{t.hero.ctaSecondary}</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Trust Stats Banner -->
+      <div class="mt-14 pt-10 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        {t.hero.stats.map((stat) => (
+          <div class="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-4 border border-slate-700/50">
+            <div class="text-2xl sm:text-3xl font-black text-amber-400 font-display">{stat.value}</div>
+            <div class="text-xs sm:text-sm text-slate-300 font-medium mt-1">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN PILLAR: TAXES (PRIMARY HIGHLIGHT) -->
+  <section id="taxes" class="py-20 bg-slate-50 relative scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center mb-16">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-900 font-bold text-xs uppercase tracking-widest border border-amber-300">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          {t.taxHighlight.tag}
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950 font-display mt-4">
+          {t.taxHighlight.title}
+        </h2>
+        <p class="text-slate-600 text-base sm:text-lg mt-4 leading-relaxed">
+          {t.taxHighlight.desc}
+        </p>
+      </div>
+
+      <!-- Feature Grid for Taxes -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        {t.taxHighlight.features.map((feature, idx) => (
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 font-black text-xl flex items-center justify-center mb-4 border border-amber-200">
+                0{idx + 1}
+              </div>
+              <h3 class="font-display font-bold text-slate-900 text-lg mb-2">
+                {feature.title}
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed">
+                {feature.desc}
+              </p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-100 text-xs font-bold text-amber-700 flex items-center gap-1">
+              <span>Bilingual Support</span>
+              <span>✓</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Detailed Breakdown for Taxes -->
+      <div class="bg-gradient-to-r from-blue-900 to-indigo-950 text-white rounded-3xl p-8 sm:p-12 shadow-xl mb-16">
+        <div class="grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <span class="text-amber-400 text-xs uppercase font-bold tracking-widest">Community Commitment</span>
+            <h3 class="text-2xl sm:text-3xl font-black font-display mt-2 mb-4">
+              {taxesService.title[locale]}
+            </h3>
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+              {taxesService.fullDesc[locale]}
+            </p>
+            <div class="space-y-3">
+              {taxesService.benefits[locale].map((benefit) => (
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                    ✓
+                  </div>
+                  <span class="text-slate-200 text-sm font-medium">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Step By Step Tax Process -->
+          <div class="bg-slate-900/80 rounded-2xl p-6 sm:p-8 border border-white/10">
+            <h4 class="font-display font-bold text-lg text-amber-400 mb-5 flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Step-by-Step Filing Process
+            </h4>
+            <ol class="space-y-4 text-sm text-slate-300">
+              {taxesService.steps[locale].map((step, idx) => (
+                <li class="flex items-start gap-3">
+                  <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center shrink-0">
+                    {idx + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+            <div class="mt-6 pt-5 border-t border-slate-800 text-center">
+              <a
+                href="/en#contacto"
+                class="inline-block w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm py-3 px-6 rounded-xl transition-all shadow"
+              >
+                Schedule Tax Appointment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Taxes FAQs -->
+      <div class="max-w-4xl mx-auto mb-6">
+        <h3 class="text-xl sm:text-2xl font-bold font-display text-slate-900 text-center mb-6">
+          Frequently Asked Questions About Taxes
+        </h3>
+        <div class="space-y-4">
+          {taxesService.faqs[locale].map((faq) => (
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+              <h4 class="font-bold text-slate-900 text-base flex items-start gap-2">
+                <span class="text-amber-600 font-black">?</span>
+                {faq.q}
+              </h4>
+              <p class="text-slate-600 text-sm mt-2 pl-5 leading-relaxed">
+                {faq.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR SECTION -->
+  <section id="calculadora" class="py-16 bg-slate-900 text-white scroll-mt-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="px-3 py-1 rounded-full bg-blue-900 text-blue-300 text-xs font-bold uppercase tracking-wider">
+          {t.calculatorSection.tag}
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black font-display mt-3">
+          {t.calculatorSection.title}
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2">
+          {t.calculatorSection.desc}
+        </p>
+      </div>
+
+      <TaxCalculator currentLocale={locale} />
+    </div>
+  </section>
+
+  <!-- SECONDARY PILLARS: IMMIGRATION & FAMILY COACHING -->
+  <section id="otros-servicios" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center mb-16">
+        <span class="px-3.5 py-1.5 rounded-full bg-blue-100 text-blue-900 font-bold text-xs uppercase tracking-widest border border-blue-200">
+          {t.otherServices.tag}
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-950 font-display mt-4">
+          {t.otherServices.title}
+        </h2>
+        <p class="text-slate-600 text-base sm:text-lg mt-3">
+          {t.otherServices.desc}
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-10">
+        <!-- IMMIGRATION COLUMN -->
+        <div id="migracion" class="bg-gradient-to-br from-slate-50 to-blue-50/50 rounded-3xl p-8 sm:p-10 border border-blue-100 shadow-sm flex flex-col justify-between scroll-mt-24">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 text-blue-800 text-xs font-bold mb-4">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+              </svg>
+              Community Guidance
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-slate-900 font-display mb-3">
+              {migrationService.title[locale]}
+            </h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+              {migrationService.fullDesc[locale]}
+            </p>
+
+            <h4 class="font-bold text-xs uppercase tracking-wider text-blue-950 mb-3">
+              Key Areas We Assist With:
+            </h4>
+            <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
+              {migrationService.benefits[locale].map((b) => (
+                <li class="flex items-start gap-2.5">
+                  <span class="text-blue-600 font-bold">✓</span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="pt-6 border-t border-blue-100">
+            <a
+              href="/en#contacto"
+              class="inline-flex items-center justify-center w-full py-3.5 px-6 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm shadow transition-all"
+            >
+              Consult Immigration Case
+            </a>
+          </div>
+        </div>
+
+        <!-- FAMILY COACHING COLUMN -->
+        <div id="coach-familiar" class="bg-gradient-to-br from-slate-50 to-amber-50/40 rounded-3xl p-8 sm:p-10 border border-amber-200/60 shadow-sm flex flex-col justify-between scroll-mt-24">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-900 text-xs font-bold mb-4">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              Family Wellbeing & Empowerment
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-slate-900 font-display mb-3">
+              {coachingService.title[locale]}
+            </h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-6">
+              {coachingService.fullDesc[locale]}
+            </p>
+
+            <h4 class="font-bold text-xs uppercase tracking-wider text-amber-950 mb-3">
+              Coaching Focus Areas:
+            </h4>
+            <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
+              {coachingService.benefits[locale].map((b) => (
+                <li class="flex items-start gap-2.5">
+                  <span class="text-amber-600 font-bold">♥</span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="pt-6 border-t border-amber-200/50">
+            <a
+              href="/en#contacto"
+              class="inline-flex items-center justify-center w-full py-3.5 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow transition-all"
+            >
+              Schedule Family Coaching Session
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT & ASSISTANCE SECTION -->
+  <section id="contacto" class="py-20 bg-slate-100 scroll-mt-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <AssistanceForm currentLocale={locale} />
+    </div>
+  </section>
+</OrgLayout>

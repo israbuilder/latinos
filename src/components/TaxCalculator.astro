@@ -1,0 +1,218 @@
+---
+import type { Locale } from "../data/orgData";
+import { taxCalculators } from "../data/orgData";
+
+interface Props {
+  currentLocale: Locale;
+}
+
+const { currentLocale } = Astro.props;
+const t = taxCalculators[currentLocale];
+const isEs = currentLocale === "es";
+---
+
+<div class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-blue-500/20 max-w-4xl mx-auto">
+  <div class="flex items-center gap-3 mb-6">
+    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-2xl border border-amber-500/30">
+      $
+    </div>
+    <div>
+      <h3 class="text-xl sm:text-2xl font-bold font-display text-white">
+        {t.title}
+      </h3>
+      <p class="text-slate-300 text-sm mt-0.5">
+        {t.subtitle}
+      </p>
+    </div>
+  </div>
+
+  <form id="tax-calc-form" class="space-y-6">
+    <div class="grid sm:grid-cols-2 gap-5">
+      <!-- Filing Status -->
+      <div>
+        <label for="filing-status" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">
+          {t.filingStatusLabel}
+        </label>
+        <select
+          id="filing-status"
+          name="filingStatus"
+          class="w-full bg-slate-800/90 border border-slate-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm font-medium"
+        >
+          <option value="head">{t.headOfHousehold}</option>
+          <option value="married">{t.marriedJoint}</option>
+          <option value="single">{t.single}</option>
+        </select>
+      </div>
+
+      <!-- Annual Income -->
+      <div>
+        <label for="annual-income" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">
+          {t.incomeLabel}
+        </label>
+        <div class="relative">
+          <span class="absolute left-4 top-3 text-slate-400 font-bold">$</span>
+          <input
+            type="number"
+            id="annual-income"
+            name="annualIncome"
+            value="38000"
+            min="0"
+            step="1000"
+            class="w-full bg-slate-800/90 border border-slate-700 text-white pl-8 pr-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm font-medium"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Number of Dependents -->
+      <div>
+        <label for="dependents-count" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">
+          {t.dependentsLabel}
+        </label>
+        <select
+          id="dependents-count"
+          name="dependentsCount"
+          class="w-full bg-slate-800/90 border border-slate-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm font-medium"
+        >
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4+</option>
+        </select>
+      </div>
+
+      <!-- Filing with ITIN -->
+      <div>
+        <label for="has-itin" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">
+          {t.hasItinLabel}
+        </label>
+        <select
+          id="has-itin"
+          name="hasItin"
+          class="w-full bg-slate-800/90 border border-slate-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 text-sm font-medium"
+        >
+          <option value="yes">{t.yes}</option>
+          <option value="no">{t.no}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="button"
+      id="btn-calculate"
+      class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-sm uppercase tracking-wider py-4 rounded-xl shadow-lg transition-all duration-200 cursor-pointer transform hover:-translate-y-0.5"
+    >
+      {t.button}
+    </button>
+  </form>
+
+  <!-- Results Box -->
+  <div id="calc-result" class="mt-8 pt-8 border-t border-slate-800">
+    <div class="bg-slate-800/80 rounded-2xl p-6 border border-amber-500/30">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-amber-400 font-bold">
+            {isEs ? "Estimación de Créditos y Deducciones Potenciales" : "Estimated Potential Credits & Deductions"}
+          </span>
+          <div class="text-3xl sm:text-4xl font-black text-white mt-1 flex items-center gap-2">
+            <span id="result-amount" class="text-emerald-400">$3,200 - $4,800*</span>
+          </div>
+          <p id="result-explanation" class="text-xs sm:text-sm text-slate-300 mt-2">
+            {isEs 
+              ? "Basado en tu composición familiar, eres elegible para el Crédito Tributario por Hijos y deducción estándar optimizada." 
+              : "Based on your household size, you may qualify for Child Tax Credits and standard deduction optimizations."}
+          </p>
+        </div>
+
+        <a
+          href="#contacto"
+          class="shrink-0 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all"
+        >
+          {isEs ? "Tramitar con un Asesor" : "File with an Advisor"} →
+        </a>
+      </div>
+
+      <div class="mt-4 pt-4 border-t border-slate-700/60 grid grid-cols-2 sm:grid-cols-3 gap-3 text-center text-xs">
+        <div class="bg-slate-900/60 p-2.5 rounded-lg">
+          <span class="text-slate-400 block text-[11px]">{isEs ? "Deducción Estándar" : "Standard Deduction"}</span>
+          <span id="result-deduction" class="font-bold text-white text-sm">$21,900</span>
+        </div>
+        <div class="bg-slate-900/60 p-2.5 rounded-lg">
+          <span class="text-slate-400 block text-[11px]">{isEs ? "Crédito por Dependientes" : "Dependent Credits"}</span>
+          <span id="result-credits" class="font-bold text-amber-300 text-sm">Hasta $4,000</span>
+        </div>
+        <div class="bg-slate-900/60 p-2.5 rounded-lg col-span-2 sm:col-span-1">
+          <span class="text-slate-400 block text-[11px]">{isEs ? "Estatus ITIN" : "ITIN Status"}</span>
+          <span id="result-itin-note" class="font-bold text-emerald-300 text-sm">{isEs ? "100% Válido" : "100% Eligible"}</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-[11px] text-slate-400 text-center mt-4">
+      {t.disclaimer}
+    </p>
+  </div>
+</div>
+
+<script>
+  const calcBtn = document.getElementById("btn-calculate");
+  const incomeInput = document.getElementById("annual-income") as HTMLInputElement;
+  const statusSelect = document.getElementById("filing-status") as HTMLSelectElement;
+  const depSelect = document.getElementById("dependents-count") as HTMLSelectElement;
+  const itinSelect = document.getElementById("has-itin") as HTMLSelectElement;
+
+  const resultAmount = document.getElementById("result-amount");
+  const resultDeduction = document.getElementById("result-deduction");
+  const resultCredits = document.getElementById("result-credits");
+  const resultItinNote = document.getElementById("result-itin-note");
+  const resultExp = document.getElementById("result-explanation");
+
+  function runCalc() {
+    const income = Number(incomeInput?.value) || 35000;
+    const deps = Number(depSelect?.value) || 0;
+    const status = statusSelect?.value || "head";
+    const hasItin = itinSelect?.value === "yes";
+
+    let deduction = 14600; // single
+    if (status === "married") deduction = 29200;
+    if (status === "head") deduction = 21900;
+
+    const childCredits = deps * 2000;
+    const estimatedRefundLow = Math.max(0, Math.round(childCredits * 0.75 + (income < 30000 ? 1200 : 500)));
+    const estimatedRefundHigh = Math.round(childCredits + (income < 45000 ? 1800 : 800));
+
+    if (resultAmount) {
+      if (deps === 0 && income > 45000) {
+        resultAmount.textContent = `$${Math.round(income * 0.08)} - $${Math.round(income * 0.12)} (Impuesto Estimado)`;
+      } else {
+        resultAmount.textContent = `$${estimatedRefundLow.toLocaleString()} - $${estimatedRefundHigh.toLocaleString()}*`;
+      }
+    }
+
+    if (resultDeduction) {
+      resultDeduction.textContent = `$${deduction.toLocaleString()}`;
+    }
+
+    if (resultCredits) {
+      resultCredits.textContent = deps > 0 ? `Hasta $${childCredits.toLocaleString()}` : "$0";
+    }
+
+    if (resultItinNote) {
+      resultItinNote.textContent = hasItin ? "Elegible con W-7" : "Elegible con SSN";
+    }
+
+    if (resultExp) {
+      if (hasItin) {
+        resultExp.textContent = "Con ITIN puedes reclamar créditos por tus hijos con Seguro Social y deducir gastos comerciales para reducir lo que debes al IRS.";
+      } else {
+        resultExp.textContent = "Tu perfil califica para créditos de reembolso directo (EITC y Child Tax Credit) optimizando tus deducciones legales.";
+      }
+    }
+  }
+
+  if (calcBtn) {
+    calcBtn.addEventListener("click", runCalc);
+  }
+</script>

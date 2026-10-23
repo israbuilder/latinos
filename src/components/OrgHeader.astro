@@ -1,0 +1,164 @@
+---
+import type { Locale } from "../data/orgData";
+import { uiTranslations } from "../data/translations";
+import { orgConfig } from "../data/orgData";
+
+interface Props {
+  currentLocale: Locale;
+}
+
+const { currentLocale } = Astro.props;
+const t = uiTranslations[currentLocale];
+const isEs = currentLocale === "es";
+const targetLocale = isEs ? "en" : "es";
+const toggleLabel = isEs ? "English" : "Español";
+const basePath = isEs ? "" : "/en";
+const switchUrl = isEs ? "/en" : "/";
+---
+
+<!-- Top Announcement & Trust Bar -->
+<div class="bg-gradient-to-r from-blue-950 via-indigo-950 to-blue-900 text-white text-xs border-b border-white/10 py-2 px-4">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div class="flex items-center gap-2 text-center sm:text-left">
+      <span class="inline-flex items-center justify-center h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="font-medium text-amber-300 font-semibold">{t.topBar.alert}</span>
+      <span class="hidden md:inline text-white/40">|</span>
+      <span class="hidden md:inline text-white/80">{t.topBar.schedule}</span>
+    </div>
+
+    <div class="flex items-center gap-4 text-white/90">
+      <div class="flex items-center gap-1.5">
+        <span class="text-white/60">{t.topBar.callUs}</span>
+        <a href={orgConfig.contact.phoneHref} class="font-bold text-amber-300 hover:text-white transition-colors">
+          {orgConfig.contact.phone}
+        </a>
+      </div>
+      <span class="text-white/30">|</span>
+      <!-- Language Switcher Pill -->
+      <a
+        href={switchUrl}
+        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 hover:bg-amber-400 hover:text-slate-900 text-white text-xs font-bold transition-all border border-white/20"
+        title={isEs ? "Switch to English" : "Cambiar a Español"}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span>{toggleLabel}</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Main Sticky Header -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md text-slate-800 shadow-md border-b border-slate-200">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
+    <!-- Brand Logo -->
+    <a href={basePath || "/"} class="flex items-center gap-3 shrink-0" aria-label={t.siteName}>
+      <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-blue-700 via-indigo-700 to-amber-500 flex items-center justify-center text-white shadow-md font-black text-xl tracking-tight">
+        L
+      </div>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-black text-xl sm:text-2xl tracking-tight text-blue-950 font-display">LATINOS</span>
+          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 border border-amber-300">.ORG</span>
+        </div>
+        <p class="text-[11px] font-medium text-slate-500 tracking-wide uppercase leading-none mt-0.5">
+          {t.slogan}
+        </p>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-700" aria-label="Navegación principal">
+      <a href={`${basePath}/#taxes`} class="text-blue-900 font-bold hover:text-amber-600 transition-colors flex items-center gap-1.5 py-1 border-b-2 border-transparent hover:border-amber-500">
+        <span class="inline-block w-2 h-2 rounded-full bg-amber-500"></span>
+        {t.nav.taxes}
+      </a>
+      <a href={`${basePath}/#migracion`} class="hover:text-blue-700 transition-colors py-1 border-b-2 border-transparent hover:border-blue-600">
+        {t.nav.immigration}
+      </a>
+      <a href={`${basePath}/#coach-familiar`} class="hover:text-blue-700 transition-colors py-1 border-b-2 border-transparent hover:border-blue-600">
+        {t.nav.coaching}
+      </a>
+      <a href={`${basePath}/#calculadora`} class="hover:text-blue-700 transition-colors py-1 border-b-2 border-transparent hover:border-blue-600">
+        {t.nav.calculator}
+      </a>
+    </nav>
+
+    <!-- CTAs and Lang Switcher -->
+    <div class="flex items-center gap-3">
+      <a
+        href={switchUrl}
+        class="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-blue-700 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-blue-300 transition-colors"
+      >
+        <span class={isEs ? "font-black text-blue-700" : "text-slate-400"}>ES</span>
+        <span class="text-slate-300">/</span>
+        <span class={!isEs ? "font-black text-blue-700" : "text-slate-400"}>EN</span>
+      </a>
+
+      <a
+        href={`${basePath}/#contacto`}
+        class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-700 to-indigo-800 hover:from-blue-800 hover:to-indigo-900 text-white font-bold text-xs sm:text-sm px-4 sm:px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+      >
+        <span>{t.nav.contact}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+
+      <!-- Mobile Menu Toggle Button -->
+      <button
+        id="org-mobile-menu-btn"
+        type="button"
+        class="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
+        aria-label="Abrir menú"
+      >
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Navigation -->
+  <div id="org-mobile-menu" class="hidden lg:hidden border-t border-slate-200 bg-white px-6 py-5 shadow-xl">
+    <nav class="flex flex-col gap-4 text-base font-semibold text-slate-800">
+      <a href={`${basePath}/#taxes`} class="text-blue-900 font-bold flex items-center gap-2 p-2 rounded-lg hover:bg-blue-50">
+        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+        {t.nav.taxes}
+      </a>
+      <a href={`${basePath}/#migracion`} class="p-2 rounded-lg hover:bg-slate-50">
+        {t.nav.immigration}
+      </a>
+      <a href={`${basePath}/#coach-familiar`} class="p-2 rounded-lg hover:bg-slate-50">
+        {t.nav.coaching}
+      </a>
+      <a href={`${basePath}/#calculadora`} class="p-2 rounded-lg hover:bg-slate-50">
+        {t.nav.calculator}
+      </a>
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+        <span class="text-xs text-slate-500 font-medium">Idioma / Language:</span>
+        <a href={switchUrl} class="px-3 py-1 rounded-full bg-slate-100 text-xs font-bold text-blue-900">
+          {toggleLabel}
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById("org-mobile-menu-btn");
+  const menu = document.getElementById("org-mobile-menu");
+  if (btn && menu) {
+    btn.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.classList.add("hidden");
+      });
+    });
+  }
+</script>
