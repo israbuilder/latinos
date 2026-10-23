@@ -53,21 +53,16 @@ const switchUrl = isEs ? "/en" : "/";
 
 <!-- Main Sticky Header -->
 <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md text-slate-800 shadow-md border-b border-slate-200">
-  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 py-1 sm:py-1.5 h-16 sm:h-[4.25rem]">
     <!-- Brand Logo -->
-    <a href={basePath || "/"} class="flex items-center gap-3 shrink-0" aria-label={t.siteName}>
-      <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-blue-700 via-indigo-700 to-amber-500 flex items-center justify-center text-white shadow-md font-black text-xl tracking-tight">
-        L
-      </div>
-      <div>
-        <div class="flex items-center gap-1.5">
-          <span class="font-black text-xl sm:text-2xl tracking-tight text-blue-950 font-display">LATINOS</span>
-          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 border border-amber-300">.ORG</span>
-        </div>
-        <p class="text-[11px] font-medium text-slate-500 tracking-wide uppercase leading-none mt-0.5">
-          {t.slogan}
-        </p>
-      </div>
+    <a href={basePath || "/"} class="flex items-center gap-3 shrink-0 h-full py-0.5" aria-label={t.siteName}>
+      <img
+        src="/images/logo.png"
+        alt={t.siteName}
+        width="220"
+        height="70"
+        class="h-12 sm:h-14 w-auto max-h-full object-contain transform transition-transform hover:scale-105"
+      />
     </a>
 
     <!-- Desktop Navigation Links -->
@@ -84,6 +79,9 @@ const switchUrl = isEs ? "/en" : "/";
       </a>
       <a href={`${basePath}/#calculadora`} class="hover:text-blue-700 transition-colors py-1 border-b-2 border-transparent hover:border-blue-600">
         {t.nav.calculator}
+      </a>
+      <a href="/blog" class="hover:text-blue-700 transition-colors py-1 border-b-2 border-transparent hover:border-blue-600">
+        {t.nav.blog}
       </a>
     </nav>
 
@@ -138,6 +136,9 @@ const switchUrl = isEs ? "/en" : "/";
       <a href={`${basePath}/#calculadora`} class="p-2 rounded-lg hover:bg-slate-50">
         {t.nav.calculator}
       </a>
+      <a href="/blog" class="p-2 rounded-lg hover:bg-slate-50">
+        {t.nav.blog}
+      </a>
       <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
         <span class="text-xs text-slate-500 font-medium">Idioma / Language:</span>
         <a href={switchUrl} class="px-3 py-1 rounded-full bg-slate-100 text-xs font-bold text-blue-900">
@@ -162,3 +163,4 @@ const switchUrl = isEs ? "/en" : "/";
     });
   }
 </script>
+

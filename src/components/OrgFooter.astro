@@ -19,13 +19,13 @@ const year = new Date().getFullYear();
     <!-- Brand Info -->
     <div>
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-amber-500 flex items-center justify-center text-white shadow font-black text-xl">
-          L
-        </div>
-        <div>
-          <span class="font-black text-2xl tracking-tight text-white font-display">LATINOS</span>
-          <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-400/30">.ORG</span>
-        </div>
+        <img
+          src="/images/logo.png"
+          alt="Impulsando Latinos"
+          width="180"
+          height="50"
+          class="h-11 w-auto object-contain brightness-0 invert"
+        />
       </div>
       <p class="mt-4 text-sm text-slate-400 leading-relaxed">
         {t.footer.about}
@@ -64,6 +64,12 @@ const year = new Date().getFullYear();
           <a href={`${basePath}/#calculadora`} class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
             <span class="text-blue-400 text-xs">›</span>
             {isEs ? "Calculadora de Estimación de Taxes" : "Tax Refund Estimator"}
+          </a>
+        </li>
+        <li>
+          <a href="/blog" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
+            <span class="text-blue-400 text-xs">›</span>
+            {isEs ? "Blog & Recursos Informativos" : "Blog & Resource Guides"}
           </a>
         </li>
       </ul>
@@ -146,3 +152,4 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+

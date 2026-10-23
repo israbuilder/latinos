@@ -5,7 +5,7 @@ export const business = {
   email: "houstonitbrenda@gmail.com",
   phone: "(346) 477-8912",
   phoneHref: "tel:+13464778912",
-  url: "https://latinos.houstonitsecurity.net",
+  url: "https://impulsandolatinos.org",
   address: "1927 W. McKinney St., Houston, TX 77019",
   // Structured address for schema.org PostalAddress
   addressParts: {

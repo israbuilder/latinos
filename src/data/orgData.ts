@@ -13,10 +13,10 @@ export interface ServiceDetail {
 }
 
 export const orgConfig = {
-  name: "Latinos Org",
+  name: "Impulsando Latinos",
   fullName: {
-    es: "Latinos Foundation & Community Services",
-    en: "Latinos Foundation & Community Services",
+    es: "Impulsando Latinos Organization",
+    en: "Impulsando Latinos Organization",
   },
   tagline: {
     es: "Apoyo integral para la comunidad hispana: Declaración y Pago de Taxes, Orientación Migratoria y Coach Familiar.",
@@ -30,8 +30,8 @@ export const orgConfig = {
     phone: "(346) 477-8912",
     phoneHref: "tel:+13464778912",
     whatsapp: "+13464778912",
-    whatsappHref: "https://wa.me/13464778912?text=Hola,%20necesito%20apoyo%20con%20taxes%20y%20servicios%20de%20Latinos%20Org",
-    email: "apoyo@latinos.org",
+    whatsappHref: "https://wa.me/13464778912?text=Hola,%20necesito%20apoyo%20con%20taxes%20y%20servicios%20de%20Impulsando%20Latinos",
+    email: "apoyo@impulsandolatinos.org",
     address: "1927 W. McKinney St., Houston, TX 77019",
     hours: {
       es: "Lunes a Sábado: 8:00 AM – 7:00 PM | Emergencias comunitarias 24/7",
@@ -296,3 +296,4 @@ export const taxCalculators = {
     disclaimer: "* Informational estimate only. Final results depend on medical expenses, education credits, business write-offs, and state guidelines.",
   },
 };
+

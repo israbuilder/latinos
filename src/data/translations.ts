@@ -1,6 +1,6 @@
 export const uiTranslations = {
   es: {
-    siteName: "Latinos Org",
+    siteName: "Impulsando Latinos",
     slogan: "Centro de Apoyo Comunitario Hispano",
     nav: {
       home: "Inicio",
@@ -8,6 +8,7 @@ export const uiTranslations = {
       immigration: "Casos de Migración",
       coaching: "Coach Familiar",
       calculator: "Calculadora de Taxes",
+      blog: "Blog",
       contact: "Solicitar Apoyo",
     },
     topBar: {
@@ -16,7 +17,7 @@ export const uiTranslations = {
       callUs: "Llámanos:",
     },
     hero: {
-      badge: "Iniciativa Comunitaria Hispana · Latinos.org",
+      badge: "Iniciativa Comunitaria Hispana · ImpulsandoLatinos.org",
       headlineStart: "Tranquilidad y Respaldo para tu Familia: ",
       headlineHighlight: "Pago de Taxes",
       headlineEnd: ", Migración y Coach Familiar",
@@ -83,14 +84,14 @@ export const uiTranslations = {
       },
     },
     footer: {
-      about: "Latinos Org es una plataforma comunitaria comprometida con el progreso, la estabilidad legal y el bienestar de las familias hispanas en los Estados Unidos.",
+      about: "Impulsando Latinos es una plataforma comunitaria comprometida con el progreso, la estabilidad legal y el bienestar de las familias hispanas en los Estados Unidos.",
       quickLinks: "Accesos Rápidos",
-      disclaimer: "Descargo de Responsabilidad: Latinos Org ofrece orientación informativa, preparación fiscal y coaching familiar de apoyo comunitario. No somos una firma de abogados formal ni una entidad del IRS; para dictámenes legales específicos te vinculamos con abogados colegiados aliados.",
+      disclaimer: "Descargo de Responsabilidad: Impulsando Latinos ofrece orientación informativa, preparación fiscal y coaching familiar de apoyo comunitario. No somos una firma de abogados formal ni una entidad del IRS; para dictámenes legales específicos te vinculamos con abogados colegiados aliados.",
       rights: "Todos los derechos reservados. Diseñado para la comunidad hispana.",
     },
   },
   en: {
-    siteName: "Latinos Org",
+    siteName: "Impulsando Latinos",
     slogan: "Hispanic Community Support Center",
     nav: {
       home: "Home",
@@ -98,6 +99,7 @@ export const uiTranslations = {
       immigration: "Immigration Cases",
       coaching: "Family Coaching",
       calculator: "Tax Calculator",
+      blog: "Blog",
       contact: "Get Support",
     },
     topBar: {
@@ -106,7 +108,7 @@ export const uiTranslations = {
       callUs: "Call us:",
     },
     hero: {
-      badge: "Hispanic Community Initiative · Latinos.org",
+      badge: "Hispanic Community Initiative · ImpulsandoLatinos.org",
       headlineStart: "Peace of Mind & Support for Your Family: ",
       headlineHighlight: "Tax Filing & Payments",
       headlineEnd: ", Immigration Cases & Family Coaching",
@@ -173,10 +175,11 @@ export const uiTranslations = {
       },
     },
     footer: {
-      about: "Latinos Org is a community-driven platform dedicated to financial security, legal empowerment, and emotional resilience for Hispanic families across the United States.",
+      about: "Impulsando Latinos is a community-driven platform dedicated to financial security, legal empowerment, and emotional resilience for Hispanic families across the United States.",
       quickLinks: "Quick Navigation",
-      disclaimer: "Disclaimer: Latinos Org provides educational guidance, tax preparation, and family coaching. We are not a law firm or a government agency; for formal legal representation we connect you with vetted, licensed attorneys.",
+      disclaimer: "Disclaimer: Impulsando Latinos provides educational guidance, tax preparation, and family coaching. We are not a law firm or a government agency; for formal legal representation we connect you with vetted, licensed attorneys.",
       rights: "All rights reserved. Dedicated to the empowerment of the Hispanic community.",
     },
   },
 };
+

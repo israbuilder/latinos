@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hugoplumbingtx.com/sitemap-index.xml
+Sitemap: https://impulsandolatinos.org/sitemap-index.xml

@@ -14,23 +14,27 @@ const coachingService = mainServices.find((s) => s.slug === "couch-familiar")!;
 ---
 
 <OrgLayout
-  title="Latinos Org | Pago de Taxes, Casos de Migración y Coach Familiar"
+  title="Impulsando Latinos | Pago de Taxes, Casos de Migración y Coach Familiar"
   description="Plataforma de apoyo comunitario hispano especializada en el Pago y Declaración de Taxes (ITIN/SSN), regularización ante el IRS, trámites migratorios y coach familiar integral."
   currentLocale={locale}
   path="/"
 >
   <!-- HERO SECTION -->
-  <section class="relative isolate overflow-hidden bg-gradient-to-b from-blue-950 via-slate-900 to-slate-900 text-white py-20 lg:py-28">
-    <!-- Subtle Grid Background -->
-    <div class="absolute inset-0 -z-10 opacity-15 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px]"></div>
+  <section class="relative isolate overflow-hidden bg-slate-950 text-white min-h-[calc(100svh-105px)] flex flex-col justify-center px-4 sm:px-6 py-6 sm:py-8 lg:py-10">
+    <!-- Hero Background Image with Overlay -->
+    <div class="absolute inset-0 -z-20">
+      <img
+        src="/images/hero.png"
+        alt="Impulsando Latinos Hero Background"
+        class="w-full h-full object-cover object-center"
+        loading="eager"
+      />
+    </div>
+    <!-- Deep Gradient Overlay for high readability & brand tone -->
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-blue-950/90 via-slate-950/85 to-slate-950/95 backdrop-blur-[2px]"></div>
     
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 font-display text-xs font-bold uppercase tracking-wider mb-6 animate-pulse">
-        <span class="h-2 w-2 rounded-full bg-amber-400"></span>
-        {t.hero.badge}
-      </div>
-
-      <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-6xl max-w-4xl mx-auto leading-tight sm:leading-none tracking-tight">
+    <div class="max-w-6xl mx-auto w-full text-center flex flex-col items-center justify-center my-auto">
+      <h1 class="font-display font-black text-2xl sm:text-4xl lg:text-5xl max-w-4xl mx-auto leading-tight sm:leading-tight tracking-tight">
         {t.hero.headlineStart}
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-200 underline decoration-amber-500 decoration-wavy decoration-2">
           {t.hero.headlineHighlight}
@@ -38,17 +42,17 @@ const coachingService = mainServices.find((s) => s.slug === "couch-familiar")!;
         {t.hero.headlineEnd}
       </h1>
 
-      <p class="mt-6 text-slate-300 text-base sm:text-xl max-w-3xl mx-auto leading-relaxed font-normal">
+      <p class="mt-3 sm:mt-4 text-slate-300 text-xs sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed font-normal">
         {t.hero.description}
       </p>
 
       <!-- Action Buttons -->
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div class="mt-5 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
         <a
           href="#taxes"
-          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-base px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 cursor-pointer"
         >
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span>{t.hero.ctaPrimary}</span>
@@ -56,21 +60,21 @@ const coachingService = mainServices.find((s) => s.slug === "couch-familiar")!;
 
         <a
           href="#contacto"
-          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-base px-8 py-4 rounded-xl border border-white/20 transition-all"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl border border-white/20 transition-all"
         >
           <span>{t.hero.ctaSecondary}</span>
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </a>
       </div>
 
       <!-- Trust Stats Banner -->
-      <div class="mt-14 pt-10 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-3 sm:gap-4 max-w-3xl w-full mx-auto">
         {t.hero.stats.map((stat) => (
-          <div class="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-4 border border-slate-700/50">
-            <div class="text-2xl sm:text-3xl font-black text-amber-400 font-display">{stat.value}</div>
-            <div class="text-xs sm:text-sm text-slate-300 font-medium mt-1">{stat.label}</div>
+          <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 border border-slate-700/50">
+            <div class="text-lg sm:text-2xl lg:text-3xl font-black text-amber-400 font-display leading-none">{stat.value}</div>
+            <div class="text-[10px] sm:text-xs text-slate-300 font-medium mt-1 leading-tight">{stat.label}</div>
           </div>
         ))}
       </div>
