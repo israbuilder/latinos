@@ -13,6 +13,7 @@ import node from '@astrojs/node';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://impulsandolatinos.org',
+  output: 'server',
 
   redirects: {
     '/charities': '/community-mission',
