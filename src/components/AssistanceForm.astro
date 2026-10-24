@@ -4,18 +4,22 @@ import { uiTranslations } from "../data/translations";
 
 interface Props {
   currentLocale: Locale;
+  phone?: string;
+  domain?: string;
 }
 
-const { currentLocale } = Astro.props;
+const {
+  currentLocale,
+  phone = "12817285637",
+  domain = "impulsandolatinos.org",
+} = Astro.props;
+
 const t = uiTranslations[currentLocale].contactSection;
+const isEs = currentLocale === "es";
 ---
 
 <div class="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 sm:p-10 max-w-3xl mx-auto">
   <div class="text-center mb-8">
-    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-bold uppercase tracking-wider mb-2">
-      <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-      {t.tag}
-    </span>
     <h3 class="text-2xl sm:text-3xl font-black text-slate-900 font-display">
       {t.title}
     </h3>
@@ -24,37 +28,44 @@ const t = uiTranslations[currentLocale].contactSection;
     </p>
   </div>
 
-  <form id="assistance-form" class="space-y-5">
-    <div class="grid sm:grid-cols-2 gap-5">
-      <div>
-        <label for="contact-name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-          {t.form.name} *
-        </label>
-        <input
-          type="text"
-          id="contact-name"
-          name="name"
-          required
-          placeholder="Ej. Carlos Martínez"
-          class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
-        />
-      </div>
+  <!-- Fallback Banner (for popup blockers) -->
+  <div
+    id="assistance-fallback-banner"
+    class="hidden mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 flex flex-col sm:flex-row items-center justify-between gap-3"
+  >
+    <div class="text-xs sm:text-sm text-center sm:text-left">
+      <span class="font-bold">{isEs ? "¿No se abrió la ventana de WhatsApp?" : "Chat window didn't open?"}</span>
+      <p class="text-amber-800 text-xs">{isEs ? "Tu navegador pudo haber bloqueado la nueva pestaña." : "Your browser may have blocked the popup."}</p>
+    </div>
+    <a
+      id="assistance-fallback-btn"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-colors shadow"
+    >
+      {isEs ? "Continuar a WhatsApp →" : "Continue to WhatsApp →"}
+    </a>
+  </div>
 
-      <div>
-        <label for="contact-phone" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-          {t.form.phone} *
-        </label>
-        <input
-          type="tel"
-          id="contact-phone"
-          name="phone"
-          required
-          placeholder="(346) 000-0000"
-          class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
-        />
-      </div>
+  <form id="assistance-form" data-phone={phone} data-domain={domain} novalidate class="space-y-5">
+    <!-- Full Name (Full width on top) -->
+    <div>
+      <label for="contact-name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+        {t.form.name} *
+      </label>
+      <input
+        type="text"
+        id="contact-name"
+        name="name"
+        required
+        placeholder={isEs ? "Ej. Carlos Martínez" : "e.g. John Doe"}
+        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+      />
+      <p id="err-assistance-name" class="hidden mt-1.5 text-xs font-medium text-red-600"></p>
     </div>
 
+    <!-- Email & Service -->
     <div class="grid sm:grid-cols-2 gap-5">
       <div>
         <label for="contact-email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
@@ -67,6 +78,7 @@ const t = uiTranslations[currentLocale].contactSection;
           placeholder="tu-correo@ejemplo.com"
           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
         />
+        <p id="err-assistance-email" class="hidden mt-1.5 text-xs font-medium text-red-600"></p>
       </div>
 
       <div>
@@ -79,34 +91,45 @@ const t = uiTranslations[currentLocale].contactSection;
           required
           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all font-semibold"
         >
-          <option value="taxes" selected>{t.form.optionTaxes}</option>
-          <option value="immigration">{t.form.optionImmigration}</option>
-          <option value="coaching">{t.form.optionCoaching}</option>
-          <option value="all">{t.form.optionAll}</option>
+          <option value="Pago de Taxes & ITIN" selected>{t.form.optionTaxes}</option>
+          <option value="Casos & Tramites de Migracion">{t.form.optionImmigration}</option>
+          <option value="Coach Familiar y Bienestar">{t.form.optionCoaching}</option>
+          <option value="Paquete Integral (Taxes + Migracion + Coach)">{t.form.optionAll}</option>
         </select>
       </div>
     </div>
 
+    <!-- Project details / Notes -->
     <div>
-      <label for="contact-notes" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-        {t.form.notes}
-      </label>
+      <div class="flex items-center justify-between mb-1.5">
+        <label for="contact-notes" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+          {t.form.notes}
+        </label>
+        <span id="assistance-char-counter" class="text-[11px] font-mono font-medium text-slate-400">
+          0/1500
+        </span>
+      </div>
       <textarea
         id="contact-notes"
         name="notes"
+        maxlength="1500"
         rows="3"
-        placeholder="Ej. Necesito tramitar mi ITIN y declarar mis taxes de este año y el anterior..."
-        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+        placeholder={isEs ? "Ej. Necesito tramitar mi ITIN y declarar mis taxes de este año y el anterior..." : "Briefly tell us about your requirements or case..."}
+        class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all resize-y"
       ></textarea>
     </div>
 
+    <!-- Submit Button directly to WhatsApp -->
     <div class="pt-2">
       <button
         type="submit"
         id="btn-submit-lead"
-        class="w-full bg-gradient-to-r from-blue-700 to-indigo-800 hover:from-blue-800 hover:to-indigo-900 text-white font-black text-sm uppercase tracking-wider py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer transform hover:-translate-y-0.5"
+        class="w-full inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-black text-sm uppercase tracking-wider py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-150 transform hover:-translate-y-0.5 cursor-pointer"
       >
-        {t.form.submit}
+        <span>{isEs ? "Enviar vía WhatsApp" : "Send via WhatsApp"}</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
       </button>
     </div>
 
@@ -124,31 +147,128 @@ const t = uiTranslations[currentLocale].contactSection;
 </div>
 
 <script>
-  const form = document.getElementById("assistance-form") as HTMLFormElement;
-  const feedback = document.getElementById("form-feedback");
-  const submitBtn = document.getElementById("btn-submit-lead") as HTMLButtonElement;
+  function setupAssistanceForm() {
+    const form = document.getElementById("assistance-form") as HTMLFormElement | null;
+    if (!form) return;
 
-  if (form) {
-    form.addEventListener("submit", (e) => {
+    const phone = form.dataset.phone || "12817285637";
+    const domain = form.dataset.domain || window.location.hostname || "impulsandolatinos.org";
+
+    const nameInput = document.getElementById("contact-name") as HTMLInputElement;
+    const emailInput = document.getElementById("contact-email") as HTMLInputElement;
+    const serviceInput = document.getElementById("service-interest") as HTMLSelectElement;
+    const notesInput = document.getElementById("contact-notes") as HTMLTextAreaElement;
+    const charCounter = document.getElementById("assistance-char-counter");
+
+    const fallbackBanner = document.getElementById("assistance-fallback-banner");
+    const fallbackBtn = document.getElementById("assistance-fallback-btn") as HTMLAnchorElement | null;
+    const feedback = document.getElementById("form-feedback");
+    const errName = document.getElementById("err-assistance-name");
+    const errEmail = document.getElementById("err-assistance-email");
+
+    if (notesInput && charCounter) {
+      notesInput.addEventListener("input", () => {
+        const len = notesInput.value.length;
+        charCounter.textContent = `${len}/1500`;
+        if (len > 1400) {
+          charCounter.classList.add("text-amber-600", "font-bold");
+          charCounter.classList.remove("text-slate-400");
+        } else {
+          charCounter.classList.remove("text-amber-600", "font-bold");
+          charCounter.classList.add("text-slate-400");
+        }
+      });
+    }
+
+    function clearErrors() {
+      nameInput?.classList.remove("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+      emailInput?.classList.remove("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+      if (errName) errName.classList.add("hidden");
+      if (errEmail) errEmail.classList.add("hidden");
+    }
+
+    form.addEventListener("submit", (e: SubmitEvent) => {
       e.preventDefault();
-      if (!submitBtn || !feedback) return;
+      clearErrors();
 
-      const originalText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Procesando...";
+      const nameVal = nameInput?.value.trim();
+      const emailVal = emailInput?.value.trim() || "N/A";
+      const serviceVal = serviceInput?.value || "N/A";
+      const notesVal = notesInput?.value.trim() || "N/A";
 
-      setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-        form.reset();
+      // 1. Synchronous validation
+      if (!nameVal) {
+        nameInput.classList.add("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+        if (errName) {
+          errName.textContent = "Por favor ingresa tu nombre completo.";
+          errName.classList.remove("hidden");
+        }
+        nameInput.focus();
+        return;
+      }
 
+      if (emailVal !== "N/A") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailVal)) {
+          emailInput.classList.add("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+          if (errEmail) {
+            errEmail.textContent = "Por favor ingresa un correo electrónico válido.";
+            errEmail.classList.remove("hidden");
+          }
+          emailInput.focus();
+          return;
+        }
+      }
+
+      // 2. Format exact English message without emojis to avoid encoding corruption
+      const rawText =
+        `New project inquiry (${domain})\n\n` +
+        `Name: ${nameVal}\n` +
+        `Email: ${emailVal}\n` +
+        `Company: N/A\n` +
+        `Service: ${serviceVal}\n\n` +
+        `Project details:\n` +
+        `${notesVal}`;
+
+      const encodedText = encodeURIComponent(rawText);
+
+      // 3. Universal WhatsApp Dispatch URL
+      // https://api.whatsapp.com/send works on all devices:
+      // On Windows/Mac: if desktop app is installed, browser asks to launch it; otherwise gives direct 'Continue to Chat' button without QR login lock
+      // On Mobile: directly launches WhatsApp application
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${encodedText}`;
+
+      // Update fallback banner button
+      if (fallbackBtn && fallbackBanner) {
+        fallbackBtn.href = whatsappUrl;
+        fallbackBanner.classList.remove("hidden");
+      }
+
+      // 4. SYNCHRONOUS POPUP DISPATCH
+      // Fired synchronously in the direct call stack of user event to prevent popup blockers and 'about:blank'
+      const newWin = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+      if (!newWin || newWin.closed || typeof newWin.closed === "undefined") {
+        console.warn("Popup blocked by browser. Accessible fallback banner displayed.");
+      }
+
+      // 5. Visual confirmation and reset
+      form.reset();
+      clearErrors();
+      if (charCounter) charCounter.textContent = "0/1500";
+
+      if (feedback) {
         feedback.classList.remove("hidden", "bg-red-50", "text-red-800");
         feedback.classList.add("bg-emerald-50", "text-emerald-800", "border", "border-emerald-200");
-        feedback.textContent = "✓ ¡Solicitud recibida con éxito! Uno de nuestros asesores especializados te contactará a la brevedad.";
-        
-        feedback.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 700);
+        feedback.textContent = "✓ ¡Abriendo WhatsApp con tu consulta precargada!";
+      }
     });
   }
-</script>
 
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupAssistanceForm);
+  } else {
+    setupAssistanceForm();
+  }
+  document.addEventListener("astro:page-load", setupAssistanceForm);
+</script>

@@ -27,10 +27,10 @@ export const orgConfig = {
     en: "Our #1 priority is helping you prepare and file your taxes with complete confidence, ITIN or SSN, maximizing your credits and avoiding IRS penalties. We also provide immigration guidance and family coaching for your household's overall wellbeing.",
   },
   contact: {
-    phone: "(346) 477-8912",
-    phoneHref: "tel:+13464778912",
-    whatsapp: "+13464778912",
-    whatsappHref: "https://wa.me/13464778912?text=Hola,%20necesito%20apoyo%20con%20taxes%20y%20servicios%20de%20Impulsando%20Latinos",
+    phone: "(281) 728-5637",
+    phoneHref: "tel:+12817285637",
+    whatsapp: "+12817285637",
+    whatsappHref: "https://wa.me/12817285637?text=Hola,%20necesito%20apoyo%20con%20taxes%20y%20servicios%20de%20Impulsando%20Latinos",
     email: "apoyo@impulsandolatinos.org",
     address: "1927 W. McKinney St., Houston, TX 77019",
     hours: {

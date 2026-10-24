@@ -70,7 +70,7 @@ export const uiTranslations = {
       desc: "Completa el formulario y un asesor comunitario se comunicará contigo en menos de 2 horas en tu idioma.",
       form: {
         name: "Nombre Completo",
-        phone: "Teléfono / WhatsApp",
+        company: "Compañía / Negocio (opcional)",
         email: "Correo Electrónico (opcional)",
         serviceInterest: "¿En qué servicio necesitas apoyo principalmente?",
         optionTaxes: "Pago de Taxes & ITIN (Prioritario)",
@@ -161,7 +161,7 @@ export const uiTranslations = {
       desc: "Fill out the quick form below and a community counselor will reach out within 2 hours in your preferred language.",
       form: {
         name: "Full Name",
-        phone: "Phone / WhatsApp",
+        company: "Company / Business (optional)",
         email: "Email Address (optional)",
         serviceInterest: "Which service do you need help with primarily?",
         optionTaxes: "Tax Filing & ITIN (Priority)",

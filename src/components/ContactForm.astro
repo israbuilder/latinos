@@ -1,0 +1,308 @@
+---
+// src/components/ContactForm.astro
+interface Props {
+  phone?: string;
+  domain?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  phone = "12817285637",
+  domain = "impulsandolatinos.org",
+  title = "Start Your Project",
+  subtitle = "Fill out the form below and we'll connect directly on WhatsApp with your project summary ready.",
+} = Astro.props;
+---
+
+<div class="w-full max-w-2xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 p-6 sm:p-10">
+  <div class="text-center mb-8">
+    <h3 class="text-2xl sm:text-3xl font-black text-slate-900 font-display">
+      {title}
+    </h3>
+    <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-lg mx-auto">
+      {subtitle}
+    </p>
+  </div>
+
+  <!-- Fallback Banner (for strict popup blockers) -->
+  <div
+    id="wa-fallback-banner"
+    class="hidden mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 flex flex-col sm:flex-row items-center justify-between gap-3 animate-fade-in"
+  >
+    <div class="text-xs sm:text-sm text-center sm:text-left">
+      <span class="font-bold">Chat didn't open automatically?</span>
+      <p class="text-amber-800 text-xs">Your browser may have blocked the new tab.</p>
+    </div>
+    <a
+      id="wa-fallback-btn"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-colors shadow"
+    >
+      Continue to WhatsApp &rarr;
+    </a>
+  </div>
+
+  <form id="wa-contact-form" novalidate data-phone={phone} data-domain={domain} class="space-y-5">
+    <!-- Name -->
+    <div>
+      <label for="wa-input-name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+        Full Name <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="wa-input-name"
+        name="name"
+        required
+        placeholder="e.g. John Doe"
+        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition-all"
+      />
+      <p id="err-name" class="hidden mt-1.5 text-xs font-medium text-red-600"></p>
+    </div>
+
+    <!-- Email & Company -->
+    <div class="grid sm:grid-cols-2 gap-5">
+      <div>
+        <label for="wa-input-email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+          Email Address <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="email"
+          id="wa-input-email"
+          name="email"
+          required
+          placeholder="john@example.com"
+          class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition-all"
+        />
+        <p id="err-email" class="hidden mt-1.5 text-xs font-medium text-red-600"></p>
+      </div>
+
+      <div>
+        <label for="wa-input-company" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+          Company <span class="text-slate-400 font-normal lowercase">(optional)</span>
+        </label>
+        <input
+          type="text"
+          id="wa-input-company"
+          name="company"
+          placeholder="e.g. Acme Inc"
+          class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition-all"
+        />
+      </div>
+    </div>
+
+    <!-- Service Selection -->
+    <div>
+      <label for="wa-input-service" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+        Service Required <span class="text-red-500">*</span>
+      </label>
+      <select
+        id="wa-input-service"
+        name="service"
+        required
+        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition-all font-medium"
+      >
+        <option value="">-- Select a service --</option>
+        <option value="Tax Filing & ITIN Assistance">Tax Filing & ITIN Assistance</option>
+        <option value="IRS Payment Agreement & Debt Relief">IRS Payment Agreement & Debt Relief</option>
+        <option value="Immigration Case Support (USCIS)">Immigration Case Support (USCIS)</option>
+        <option value="Family Coaching & Counseling">Family Coaching & Counseling</option>
+        <option value="Custom Project / Other">Custom Project / Other</option>
+      </select>
+      <p id="err-service" class="hidden mt-1.5 text-xs font-medium text-red-600"></p>
+    </div>
+
+    <!-- Message / Project Details with Counter -->
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <label for="wa-input-message" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+          Project Details <span class="text-red-500">*</span>
+        </label>
+        <span id="wa-char-counter" class="text-[11px] font-mono font-medium text-slate-400">
+          0/1500
+        </span>
+      </div>
+      <textarea
+        id="wa-input-message"
+        name="message"
+        maxlength="1500"
+        rows="4"
+        required
+        placeholder="Briefly describe your project or inquiry (minimum 10 characters)..."
+        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none transition-all resize-y"
+      ></textarea>
+      <p id="err-message" class="hidden mt-1.5 text-xs font-medium text-red-600"></p>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="pt-2">
+      <button
+        type="submit"
+        id="wa-submit-btn"
+        class="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-black text-sm uppercase tracking-wider shadow-lg hover:shadow-xl transition-all duration-150 transform hover:-translate-y-0.5 cursor-pointer"
+      >
+        <span>Send via WhatsApp</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function setupWhatsAppForm() {
+    const form = document.getElementById("wa-contact-form") as HTMLFormElement | null;
+    if (!form) return;
+
+    const phone = form.dataset.phone || "12817285637";
+    const domain = form.dataset.domain || window.location.hostname || "impulsandolatinos.org";
+
+    const nameInput = document.getElementById("wa-input-name") as HTMLInputElement;
+    const emailInput = document.getElementById("wa-input-email") as HTMLInputElement;
+    const companyInput = document.getElementById("wa-input-company") as HTMLInputElement;
+    const serviceInput = document.getElementById("wa-input-service") as HTMLSelectElement;
+    const messageInput = document.getElementById("wa-input-message") as HTMLTextAreaElement;
+    const charCounter = document.getElementById("wa-char-counter");
+
+    const fallbackBanner = document.getElementById("wa-fallback-banner");
+    const fallbackBtn = document.getElementById("wa-fallback-btn") as HTMLAnchorElement | null;
+
+    const errName = document.getElementById("err-name");
+    const errEmail = document.getElementById("err-email");
+    const errService = document.getElementById("err-service");
+    const errMessage = document.getElementById("err-message");
+
+    // Live character counter
+    if (messageInput && charCounter) {
+      messageInput.addEventListener("input", () => {
+        const len = messageInput.value.length;
+        charCounter.textContent = `${len}/1500`;
+        if (len > 1400) {
+          charCounter.classList.add("text-amber-600", "font-bold");
+          charCounter.classList.remove("text-slate-400");
+        } else {
+          charCounter.classList.remove("text-amber-600", "font-bold");
+          charCounter.classList.add("text-slate-400");
+        }
+      });
+    }
+
+    function clearFieldErrors() {
+      [nameInput, emailInput, serviceInput, messageInput].forEach((el) => {
+        el?.classList.remove("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+      });
+      [errName, errEmail, errService, errMessage].forEach((el) => {
+        if (el) el.classList.add("hidden");
+      });
+    }
+
+    function validate(): boolean {
+      clearFieldErrors();
+      let isValid = true;
+
+      // Name
+      if (!nameInput.value.trim()) {
+        nameInput.classList.add("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+        if (errName) {
+          errName.textContent = "Please provide your full name.";
+          errName.classList.remove("hidden");
+        }
+        isValid = false;
+      }
+
+      // Email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+        emailInput.classList.add("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+        if (errEmail) {
+          errEmail.textContent = "Please enter a valid email address.";
+          errEmail.classList.remove("hidden");
+        }
+        isValid = false;
+      }
+
+      // Service
+      if (!serviceInput.value) {
+        serviceInput.classList.add("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+        if (errService) {
+          errService.textContent = "Please select a service from the list.";
+          errService.classList.remove("hidden");
+        }
+        isValid = false;
+      }
+
+      // Message (min 10 chars)
+      if (!messageInput.value.trim() || messageInput.value.trim().length < 10) {
+        messageInput.classList.add("border-red-500", "ring-1", "ring-red-500", "bg-red-50/30");
+        if (errMessage) {
+          errMessage.textContent = "Please provide project details with at least 10 characters.";
+          errMessage.classList.remove("hidden");
+        }
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    form.addEventListener("submit", (e: SubmitEvent) => {
+      e.preventDefault();
+
+      // 1. Synchronous validation in browser
+      if (!validate()) {
+        return;
+      }
+
+      const nameVal = nameInput.value.trim();
+      const emailVal = emailInput.value.trim();
+      const companyVal = companyInput.value.trim() || "N/A";
+      const serviceVal = serviceInput.value;
+      const messageVal = messageInput.value.trim();
+
+      // 2. Format exact English message without emojis to prevent encoding issues
+      const rawText =
+        `New project inquiry (${domain})\n\n` +
+        `Name: ${nameVal}\n` +
+        `Email: ${emailVal}\n` +
+        `Company: ${companyVal}\n` +
+        `Service: ${serviceVal}\n\n` +
+        `Project details:\n` +
+        `${messageVal}`;
+
+      const encodedText = encodeURIComponent(rawText);
+
+      // 3. Universal WhatsApp Dispatch URL
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${phone}&text=${encodedText}`;
+
+      // Update fallback banner button
+      if (fallbackBtn && fallbackBanner) {
+        fallbackBtn.href = whatsappUrl;
+        fallbackBanner.classList.remove("hidden");
+      }
+
+      // 4. SYNCHRONOUS POPUP DISPATCH
+      // Fired synchronously in the direct call stack of user event to prevent popup blockers and 'about:blank'
+      const newWin = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+      if (!newWin || newWin.closed || typeof newWin.closed === "undefined") {
+        console.warn("Popup blocked by browser. Accessible fallback banner displayed.");
+      }
+
+      // 5. Reset form inputs
+      form.reset();
+      clearFieldErrors();
+      if (charCounter) charCounter.textContent = "0/1500";
+    });
+  }
+
+  // Support both standard load and Astro View Transitions
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupWhatsAppForm);
+  } else {
+    setupWhatsAppForm();
+  }
+  document.addEventListener("astro:page-load", setupWhatsAppForm);
+</script>
+

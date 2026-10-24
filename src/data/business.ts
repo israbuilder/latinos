@@ -3,8 +3,8 @@ export const business = {
   legalName: "Houston IT Security / Latinos Plumbing & Home Services LLC",
   founder: "Israel Zepeda",
   email: "houstonitbrenda@gmail.com",
-  phone: "(346) 477-8912",
-  phoneHref: "tel:+13464778912",
+  phone: "(281) 728-5637",
+  phoneHref: "tel:+12817285637",
   url: "https://impulsandolatinos.org",
   address: "1927 W. McKinney St., Houston, TX 77019",
   // Structured address for schema.org PostalAddress
